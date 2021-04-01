@@ -1,90 +1,40 @@
+/**
+ * @description       : Contacts REST Interface
+ * @author            : Etienne Knoerr
+ * @group             : 
+ * @last modified on  : 2021-04-01
+ * @last modified by  : Etienne Knoerr
+ * Modifications Log 
+ * Ver   Date         Author           Modification
+ * 1.0   2021-04-01   Etienne Knoerr   Initial Version
+**/
+
+/*
+Questions : 
+  - si on ne supprime pas, en mettant Active__c à false : autorise-t-on la récupération / modification de contacts inactifs ?
+*/
 @RestResource(urlMapping='/Contacts/*')
-global with sharing class ContactManager {
-  /**
-   * Standard Salesforce Error response structure
-   */
-  public class SalesforceError {
-    public String errorCode;
-    public String message;
-    public SalesforceError(String errorCode, string message) {
-      this.errorCode = errorCode;
-      this.message = message;
-    }
-  }
-  /**
-   * Standard Salesforce Database Save/update/upsert response structure
-   */
-  public class GenericResult {
-    final Id recordId;
-    final List<Database.Error> errors;
-    public Id getId() {
-      return recordId;
-    }
-    public List<Database.Error> getErrors() {
-      return errors;
-    }
-
-    public GenericResult(Id recordId, List<Database.Error> errors) {
-      this.recordId = recordId;
-      this.errors = (errors != null) ? errors : new List<Database.Error>();
-    }
-    public GenericResult(Database.SaveResult result) {
-      this(result.getId(), result.getErrors());
-    }
-    public GenericResult(Database.UpsertResult result) {
-      this(result.getId(), result.getErrors());
-    }
-    public GenericResult(Database.DeleteResult result) {
-      this(result.getId(), result.getErrors());
-    }
-    public GenericResult(Database.UndeleteResult result) {
-      this(result.getId(), result.getErrors());
-    }
-  }
-
+global with sharing class ContactManager extends RestManager{
   /**
    * GET
-   */
+   */ 
   @HttpGet
   global static void getContactById() {
+    RestContext.response.headers.put('Content-Type', 'application/json');
     try {
       // grab the contactId from the end of the URL
       Id contactId = RestContext.request.requestURI.substring(
         RestContext.request.requestURI.lastIndexOf('/') + 1
       );
-      Contact result = [
-        SELECT
-          Id,
-          FirstName,
-          LastName,
-          Email,
-          Phone,
-          MobilePhone,
-          AccountId,
-          Active__c
-        FROM Contact
-        WHERE Id = :contactId
-      ];
-      RestContext.response.responseBody = Blob.valueOf(JSON.serialize(result));
-    } catch (System.StringException e) {
-      RestContext.response.statusCode = 400;
-      SalesforceError[] errs = new List<SalesforceError>{
-        new SalesforceError('MISSING_PARAM', 'Id is not a valid Id')
-      };
-      RestContext.response.responseBody = Blob.valueOf(JSON.serialize(errs));
-    } catch (System.QueryException e) {
-      RestContext.response.statusCode = 404;
-      SalesforceError[] errs = new List<SalesforceError>{
-        new SalesforceError('NOT_FOUND', 'Contact not found')
-      };
-      RestContext.response.responseBody = Blob.valueOf(JSON.serialize(errs));
+      // collect Contact field list
+      Map<String, Schema.SObjectField> fieldMap = Contact.sObjectType.getDescribe().fields.getMap();
+      List<String> fieldNames = new List<String>(fieldMap.keySet());
+      Contact thisContact = Database.query('SELECT ' + String.join(fieldNames, ',') + ' FROM Contact  WHERE Id = \'' + contactId + '\'');
+      //Contact thisContact =[SELECT Id, FirstName, LastName, Email FROM Contact WHERE Id = :contactId] ;
+      
+      RestContext.response.responseBody = Blob.valueOf(JSON.serialize(thisContact));
     } catch (Exception e) {
-      //something else happened
-      RestContext.response.statusCode = 500;
-      SalesforceError[] errs = new List<SalesforceError>{
-        new SalesforceError('SERVER_ERROR', e.getMessage())
-      };
-      RestContext.response.responseBody = Blob.valueOf(JSON.serialize(errs));
+      handleException(e);
     }
   }
 
@@ -93,23 +43,18 @@ global with sharing class ContactManager {
    */
   @HttpDelete
   global static void deleteContact() {
-    // grab the contactId from the end of the URL
-    Id contactId = RestContext.request.requestURI.substring(
-      RestContext.request.requestURI.lastIndexOf('/') + 1
-    );
-    Contact thisContact = [SELECT Id FROM Contact WHERE Id = :contactId];
-    //
-    thisContact.Active__c = false;
-
-    DataBase.SaveResult result = Database.update(thisContact);
-    if (result.getErrors().size() != 0) {
-      RestContext.response.statusCode = 400;
-      SalesforceError[] errs = new List<SalesforceError>{
-        new SalesforceError('BAD_REQUEST', JSON.serialize(result.errors))
-      };
-      RestContext.response.responseBody = Blob.valueOf(JSON.serialize(errs));
-    } else {
-      RestContext.response.statusCode = 200;
+    RestContext.response.headers.put('Content-Type', 'application/json');
+    try {
+      // grab the contactId from the end of the URL
+      Id contactId = RestContext.request.requestURI.substring(
+        RestContext.request.requestURI.lastIndexOf('/') + 1
+      );
+      Contact thisContact = [SELECT Id, Active__c FROM Contact WHERE Id = :contactId];
+      thisContact.Active__c = false;
+      DataBase.SaveResult result = Database.update(thisContact);
+      RestContext.response.statusCode = 204;
+    } catch (Exception e) {
+      handleException(e);
     }
   }
 
@@ -139,25 +84,22 @@ global with sharing class ContactManager {
 
   /**
    * manageContact
-   * @param verb : String(POST, PATCH, PUT)
+   * @param verb : String{POST, PATCH, PUT}
    */
   private static void manageContact(String verb) {
-    List<String> verbs = new List<String>{ 'POST', 'PATCH', 'PUT' };
-    if (!verbs.contains(verb)) {
-      RestContext.response.statusCode = 500;
-      SalesforceError[] errs = new List<SalesforceError>{
-        new SalesforceError('BAD_REQUEST', 'BAD VERB')
-      };
-      RestContext.response.responseBody = Blob.valueOf(JSON.serialize(errs));
-      return;
-    }
-    Contact thisContact;
+    RestContext.response.headers.put('Content-Type', 'application/json');
     try {
+      List<String> verbs = new List<String>{ 'POST', 'PATCH', 'PUT' };
+      if (!verbs.contains(verb)) {
+        throw new VerbException();
+      }
+      Contact thisContact;
+      //TODO : check is Id needed in URL or in JSON params ?
       if (verb == 'PATCH') {
         Id contactId = RestContext.request.requestURI.substring(
           RestContext.request.requestURI.lastIndexOf('/') + 1
         );
-        Contact result = [SELECT Id FROM Contact WHERE Id = :contactId];
+        thisContact = [SELECT Id FROM Contact WHERE Id = :contactId];
       } else {
         thisContact = new Contact();
       }
@@ -173,45 +115,28 @@ global with sharing class ContactManager {
       }
       GenericResult result;
       if (verb == 'POST') {
+        // allOrNone param set to false in order to get error type
         result = new GenericResult(Database.insert(thisContact, false));
       } else if (verb == 'PATCH') {
-        result = new GenericResult(Database.update(thisContact));
+        result = new GenericResult(Database.update(thisContact, false));
       } else if (verb == 'PUT') {
-        result = new GenericResult(Database.upsert(thisContact));
+        result = new GenericResult(Database.upsert(thisContact, false));
       }
-
+      // manage error
       if (result.getErrors().size() != 0) {
-        RestContext.response.statusCode = 400;
-        //if (result.errors[0] instanceof Database.DuplicateError) {
-        SalesforceError[] errs = new List<SalesforceError>{
-          new SalesforceError('DB_ERROR', result.errors[0].message)
-        };
-        RestContext.response.responseBody = Blob.valueOf(JSON.serialize(errs));
-      } else {
-        RestContext.response.statusCode = 200;
-        RestContext.response.responseBody = Blob.valueOf(
-          JSON.serialize(thisContact)
-        );
+        if (result.getErrors()[0] instanceof Database.DuplicateError) {
+          throw new DuplicateException();
+        } else {
+          throw new ParamException(result.getErrors()[0].message);
+        }
       }
-    } catch (System.StringException e) {
-      RestContext.response.statusCode = 400;
-      SalesforceError[] errs = new List<SalesforceError>{
-        new SalesforceError('MISSING_PARAM', 'Id is not a valid Id')
-      };
-      RestContext.response.responseBody = Blob.valueOf(JSON.serialize(errs));
-    } catch (System.QueryException e) {
-      RestContext.response.statusCode = 404;
-      SalesforceError[] errs = new List<SalesforceError>{
-        new SalesforceError('NOT_FOUND', 'Contact not found')
-      };
-      RestContext.response.responseBody = Blob.valueOf(JSON.serialize(errs));
+      // Send response
+      RestContext.response.statusCode = 200;
+      RestContext.response.responseBody = Blob.valueOf(
+        JSON.serialize(thisContact)
+      );
     } catch (Exception e) {
-      //something else happened
-      RestContext.response.statusCode = 500;
-      SalesforceError[] errs = new List<SalesforceError>{
-        new SalesforceError('SERVER_ERROR', e.getMessage())
-      };
-      RestContext.response.responseBody = Blob.valueOf(JSON.serialize(errs));
+      handleException(e);
     }
   }
 }
