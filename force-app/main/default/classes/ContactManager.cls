@@ -2,7 +2,7 @@
  * @description       : Contacts REST Interface
  * @author            : Etienne Knoerr
  * @group             : 
- * @last modified on  : 2021-04-01
+ * @last modified on  : 2021-04-09
  * @last modified by  : Etienne Knoerr
  * Modifications Log 
  * Ver   Date         Author           Modification
@@ -12,6 +12,7 @@
 /*
 Questions : 
   - si on ne supprime pas, en mettant Active__c à false : autorise-t-on la récupération / modification de contacts inactifs ?
+  - PATCH : passer l'ID en paramètre JSON ou dans l'URL ?
 */
 @RestResource(urlMapping='/Contacts/*')
 global with sharing class ContactManager extends RestManager{
@@ -113,6 +114,19 @@ global with sharing class ContactManager extends RestManager{
         // Set the field and value on the Contact sObject
         thisContact.put(fieldName, params.get(fieldName));
       }
+      Boolean duplicate;
+      // test for duplicate
+      if(verb != 'PATCH'){
+        try {
+          Contact testContactDuplicate = [SELECT Id FROM Contact WHERE Email = :thisContact.Email];
+          thisContact.put('Id', testContactDuplicate.Id);
+          verb = 'PATCH';
+          duplicate = true;
+        } catch (System.QueryException e) {
+          duplicate = false;
+        }
+      }
+
       GenericResult result;
       if (verb == 'POST') {
         // allOrNone param set to false in order to get error type
