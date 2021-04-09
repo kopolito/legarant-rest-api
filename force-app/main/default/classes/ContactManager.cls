@@ -28,10 +28,10 @@ global with sharing class ContactManager extends RestManager{
         RestContext.request.requestURI.lastIndexOf('/') + 1
       );
       // collect Contact field list
-      Map<String, Schema.SObjectField> fieldMap = Contact.sObjectType.getDescribe().fields.getMap();
-      List<String> fieldNames = new List<String>(fieldMap.keySet());
-      Contact thisContact = Database.query('SELECT ' + String.join(fieldNames, ',') + ' FROM Contact  WHERE Id = \'' + contactId + '\'');
-      //Contact thisContact =[SELECT Id, FirstName, LastName, Email FROM Contact WHERE Id = :contactId] ;
+      //Map<String, Schema.SObjectField> fieldMap = Contact.sObjectType.getDescribe().fields.getMap();
+      //List<String> fieldNames = new List<String>(fieldMap.keySet());
+      //Contact thisContact = Database.query('SELECT ' + String.join(fieldNames, ',') + ' FROM Contact  WHERE Id = \'' + contactId + '\'');
+      Contact thisContact =[SELECT Id, FirstName, LastName, Email, Phone FROM Contact WHERE Id = :contactId] ;
       
       RestContext.response.responseBody = Blob.valueOf(JSON.serialize(thisContact));
     } catch (Exception e) {
