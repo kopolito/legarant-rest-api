@@ -2,7 +2,7 @@
  * @description       : Contacts REST Interface
  * @author            : Etienne Knoerr
  * @group             : 
- * @last modified on  : 2021-04-09
+ * @last modified on  : 2021-04-15
  * @last modified by  : Etienne Knoerr
  * Modifications Log 
  * Ver   Date         Author           Modification
@@ -15,7 +15,7 @@ Questions :
   - PATCH : passer l'ID en paramètre JSON ou dans l'URL ?
 */
 @RestResource(urlMapping='/Contacts/*')
-global with sharing class ContactManager extends RestManager{
+global with sharing class ContactRest extends RestManager{
   /**
    * GET
    */ 
@@ -28,14 +28,14 @@ global with sharing class ContactManager extends RestManager{
         RestContext.request.requestURI.lastIndexOf('/') + 1
       );
       // collect Contact field list
-      //Map<String, Schema.SObjectField> fieldMap = Contact.sObjectType.getDescribe().fields.getMap();
-      //List<String> fieldNames = new List<String>(fieldMap.keySet());
-      //Contact thisContact = Database.query('SELECT ' + String.join(fieldNames, ',') + ' FROM Contact  WHERE Id = \'' + contactId + '\'');
-      Contact thisContact =[SELECT Id, FirstName, LastName, Email, Phone FROM Contact WHERE Id = :contactId] ;
+      Map<String, Schema.SObjectField> fieldMap = Contact.sObjectType.getDescribe().fields.getMap();
+      List<String> fieldNames = new List<String>(fieldMap.keySet());
+      Contact thisContact = Database.query('SELECT ' + String.join(fieldNames, ',') + ' FROM Contact  WHERE Id = \'' + contactId + '\'');
+      //Contact thisContact = [SELECT Id, FirstName, LastName, Email, Phone FROM Contact WHERE Id = :contactId] ;
       
       RestContext.response.responseBody = Blob.valueOf(JSON.serialize(thisContact));
     } catch (Exception e) {
-      handleException(e);
+      handleException(e, 'Contact');
     }
   }
 
@@ -55,7 +55,7 @@ global with sharing class ContactManager extends RestManager{
       DataBase.SaveResult result = Database.update(thisContact);
       RestContext.response.statusCode = 204;
     } catch (Exception e) {
-      handleException(e);
+      handleException(e, 'Contact');
     }
   }
 
@@ -90,10 +90,7 @@ global with sharing class ContactManager extends RestManager{
   private static void manageContact(String verb) {
     RestContext.response.headers.put('Content-Type', 'application/json');
     try {
-      List<String> verbs = new List<String>{ 'POST', 'PATCH', 'PUT' };
-      if (!verbs.contains(verb)) {
-        throw new VerbException();
-      }
+      checkVerb(verb);
       Contact thisContact;
       //TODO : check is Id needed in URL or in JSON params ?
       if (verb == 'PATCH') {
@@ -150,7 +147,13 @@ global with sharing class ContactManager extends RestManager{
         JSON.serialize(thisContact)
       );
     } catch (Exception e) {
-      handleException(e);
+      handleException(e, 'Contact');
     }
+  }
+  private static void checkVerb(String verb){
+    List<String> verbs = new List<String>{ 'POST', 'PATCH', 'PUT' };
+      if (!verbs.contains(verb)) {
+        throw new VerbException();
+      }
   }
 }
