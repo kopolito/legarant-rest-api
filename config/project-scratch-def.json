@@ -1,5 +1,5 @@
 {
-  "orgName": "eknoerr company",
+  "orgName": "Legarant",
   "edition": "Developer",
   "features": ["EnableSetPasswordInApi"],
   "settings": {
@@ -9,5 +9,6 @@
     "mobileSettings": {
       "enableS1EncryptedStoragePref2": false
     }
-  }
+  },
+  "language": "en_US"
 }
