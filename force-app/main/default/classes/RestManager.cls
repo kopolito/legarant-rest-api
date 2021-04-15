@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : Etienne Knoerr
  * @group             : 
- * @last modified on  : 2021-04-01
+ * @last modified on  : 2021-04-15
  * @last modified by  : Etienne Knoerr
  * Modifications Log 
  * Ver   Date         Author           Modification
@@ -61,21 +61,21 @@ public abstract class RestManager {
     * @description manage error response
     * @param Exception e 
     **/
-    public static void handleException(Exception e){
+    public static void handleException(Exception e, String resource){
         SalesforceError[] errors = new List<SalesforceError>();
         // errors.add(new SalesforceError('ERROR', e.getTypeName()));
-        if (e instanceof ContactManager.VerbException) {
+        if (e instanceof RestManager.VerbException) {
             setError(405, 'BAD_VERB', 'Method Not Allowed');
         } else if (e instanceof System.StringException) {
             setError(400, 'MISSING_PARAM', 'Id is not a valid Id');
         } else if (e instanceof System.JSONException) {
             setError(400, 'BAD_PARAMS', 'Params are not in JSON Format');
-        } else if (e instanceof ContactManager.ParamException) {
+        } else if (e instanceof RestManager.ParamException) {
             setError(400, 'BAD_PARAMS', e.getMessage());
         } else if (e instanceof System.QueryException) {
-            setError(404, 'NOT_FOUND', 'Contact not found');
-        } else if (e instanceof ContactManager.DuplicateException) {
-            setError(400, 'DUPLICATE', 'Contact already exists');
+            setError(404, 'NOT_FOUND', resource + ' not found');
+        } else if (e instanceof RestManager.DuplicateException) {
+            setError(400, 'DUPLICATE', resource + ' already exists');
         } else if (e instanceof System.SObjectException) {
             setError(400, 'BAD_PARAMS', e.getMessage());
         } else {
