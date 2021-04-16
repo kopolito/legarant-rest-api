@@ -2,7 +2,7 @@
  * @description       : Contacts REST Interface
  * @author            : Etienne Knoerr
  * @group             : 
- * @last modified on  : 2021-04-15
+ * @last modified on  : 2021-04-16
  * @last modified by  : Etienne Knoerr
  * Modifications Log 
  * Ver   Date         Author           Modification
@@ -22,21 +22,42 @@ global with sharing class ContactRest extends RestManager{
   @HttpGet
   global static void getContactById() {
     RestContext.response.headers.put('Content-Type', 'application/json');
-    try {
-      // grab the contactId from the end of the URL
-      Id contactId = RestContext.request.requestURI.substring(
+    try{
+      String contactId = RestContext.request.requestURI.substring(
         RestContext.request.requestURI.lastIndexOf('/') + 1
       );
-      // collect Contact field list
-      Map<String, Schema.SObjectField> fieldMap = Contact.sObjectType.getDescribe().fields.getMap();
-      List<String> fieldNames = new List<String>(fieldMap.keySet());
-      Contact thisContact = Database.query('SELECT ' + String.join(fieldNames, ',') + ' FROM Contact  WHERE Id = \'' + contactId + '\'');
-      //Contact thisContact = [SELECT Id, FirstName, LastName, Email, Phone FROM Contact WHERE Id = :contactId] ;
-      
-      RestContext.response.responseBody = Blob.valueOf(JSON.serialize(thisContact));
+      if(isValidSalesforceId(contactId, Contact.class)){
+        handleSingle(contactId);
+      } else {
+        handleCollection();
+      }      
     } catch (Exception e) {
-      handleException(e, 'Contact');
+      handleRestException(e, 'Contact');
     }
+  }
+
+  /**
+  * @description handleSingle > One Contact
+  * @param String contactId 
+  **/
+  private static void handleSingle(Id contactId){
+    // collect Contact field list
+    Map<String, Schema.SObjectField> fieldMap = Contact.sObjectType.getDescribe().fields.getMap();
+    List<String> fieldNames = new List<String>(fieldMap.keySet());
+    Contact thisContact = Database.query('SELECT ' + String.join(fieldNames, ',') + ' FROM Contact  WHERE Id = \'' + contactId + '\'');
+    //Contact thisContact = [SELECT Id, FirstName, LastName, Email, Phone FROM Contact WHERE Id = :contactId] ;
+    RestContext.response.responseBody = Blob.valueOf(JSON.serialize(thisContact));
+  }
+
+  /**
+  * @description handleCollection > Contact List
+  **/
+  private static void handleCollection(){
+    // collect Contact field list
+    Map<String, Schema.SObjectField> fieldMap = Contact.sObjectType.getDescribe().fields.getMap();
+    List<String> fieldNames = new List<String>(fieldMap.keySet());
+    List<Contact> thisContacts = Database.query('SELECT ' + String.join(fieldNames, ',') + ' FROM Contact LIMIT 20');
+    RestContext.response.responseBody = Blob.valueOf(JSON.serialize(thisContacts));
   }
 
   /**
@@ -55,7 +76,7 @@ global with sharing class ContactRest extends RestManager{
       DataBase.SaveResult result = Database.update(thisContact);
       RestContext.response.statusCode = 204;
     } catch (Exception e) {
-      handleException(e, 'Contact');
+      handleRestException(e, 'Contact');
     }
   }
 
@@ -90,7 +111,7 @@ global with sharing class ContactRest extends RestManager{
   private static void manageContact(String verb) {
     RestContext.response.headers.put('Content-Type', 'application/json');
     try {
-      checkVerb(verb);
+      checkSubmitVerb(verb);
       Contact thisContact;
       //TODO : check is Id needed in URL or in JSON params ?
       if (verb == 'PATCH') {
@@ -147,13 +168,7 @@ global with sharing class ContactRest extends RestManager{
         JSON.serialize(thisContact)
       );
     } catch (Exception e) {
-      handleException(e, 'Contact');
+      handleRestException(e, 'Contact');
     }
-  }
-  private static void checkVerb(String verb){
-    List<String> verbs = new List<String>{ 'POST', 'PATCH', 'PUT' };
-      if (!verbs.contains(verb)) {
-        throw new VerbException();
-      }
   }
 }
