@@ -94,4 +94,38 @@ public abstract class RestManager {
         SalesforceError[] errors = new List<SalesforceError>{new SalesforceError(errorCode, message)};
         RestContext.response.responseBody = Blob.valueOf(JSON.serialize(errors));
     }
+
+
+
+    /**
+    * @description check submitVerb
+    * @param String verb 
+    **/
+    public static void checkSubmitVerb(String verb){
+        List<String> verbs = new List<String>{ 'POST', 'PATCH', 'PUT' };
+          if (!verbs.contains(verb)) {
+            throw new VerbException();
+          }
+      }
+
+      /**
+     * Test a String to see if it is a valid SFDC  ID
+     * @param  sfdcId The ID to test.
+     * @param  t      The Type of the sObject to compare against
+     * @return        Returns true if the ID is valid, false if it is not.
+     */
+    public static Boolean isValidSalesforceId( String sfdcId, System.Type t ){
+        try {
+            if ( Pattern.compile( '[a-zA-Z0-9]{15}|[a-zA-Z0-9]{18}' ).matcher( sfdcId ).matches() ){
+                Id id = sfdcId;
+                sObject sObj = (sObject) t.newInstance();
+                sObj.Id = id;
+                return true;
+            }
+        } catch ( Exception e ){ // StringException, TypeException
+            return false;
+        }
+        // ID is not valid
+        return false;
+    }
 }
