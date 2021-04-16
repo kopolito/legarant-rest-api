@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : Etienne Knoerr
  * @group             : 
- * @last modified on  : 2021-04-15
+ * @last modified on  : 2021-04-16
  * @last modified by  : Etienne Knoerr
  * Modifications Log 
  * Ver   Date         Author           Modification
@@ -57,11 +57,11 @@ public abstract class RestManager {
         }
     }
     /**
-     * handleException
+     * handleRestException
     * @description manage error response
     * @param Exception e 
     **/
-    public static void handleException(Exception e, String resource){
+    public static void handleRestException(Exception e, String resource){
         SalesforceError[] errors = new List<SalesforceError>();
         // errors.add(new SalesforceError('ERROR', e.getTypeName()));
         if (e instanceof RestManager.VerbException) {

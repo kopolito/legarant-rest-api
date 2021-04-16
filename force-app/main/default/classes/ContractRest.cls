@@ -30,7 +30,7 @@ global with sharing class ContractRest extends RestManager{
       
       RestContext.response.responseBody = Blob.valueOf(JSON.serialize(thisContract));
     } catch (Exception e) {
-      handleException(e, 'Contract');
+      handleRestException(e, 'Contract');
     }
   }
 
@@ -65,7 +65,7 @@ global with sharing class ContractRest extends RestManager{
   private static void manageContract(String verb) {
     RestContext.response.headers.put('Content-Type', 'application/json');
     try {
-      checkVerb(verb);
+      checkSubmitVerb(verb);
       Contract thisContract;
       //TODO : check is Id needed in URL or in JSON params ?
       if (verb == 'PATCH') {
@@ -117,13 +117,7 @@ global with sharing class ContractRest extends RestManager{
         JSON.serialize(thisContract)
       );
     } catch (Exception e) {
-      handleException(e, 'Contract');
+      handleRestException(e, 'Contract');
     }
-  }
-  private static void checkVerb(String verb){
-    List<String> verbs = new List<String>{ 'POST', 'PATCH', 'PUT' };
-      if (!verbs.contains(verb)) {
-        throw new VerbException();
-      }
   }
 }
