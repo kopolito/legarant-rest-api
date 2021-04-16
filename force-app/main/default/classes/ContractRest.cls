@@ -17,21 +17,42 @@ global with sharing class ContractRest extends RestManager{
   @HttpGet
   global static void getContractById() {
     RestContext.response.headers.put('Content-Type', 'application/json');
-    try {
-      // grab the contractId from the end of the URL
-      Id contractId = RestContext.request.requestURI.substring(
+    try{
+      String contractId = RestContext.request.requestURI.substring(
         RestContext.request.requestURI.lastIndexOf('/') + 1
       );
-      // collect Contract field list
-      Map<String, Schema.SObjectField> fieldMap = Contract.sObjectType.getDescribe().fields.getMap();
-      List<String> fieldNames = new List<String>(fieldMap.keySet());
-      Contract thisContract = Database.query('SELECT ' + String.join(fieldNames, ',') + ' FROM Contract  WHERE Id = \'' + contractId + '\'');
-      //Contract thisContract = [SELECT Id, FirstName, LastName, Email, Phone FROM Contract WHERE Id = :contractId] ;
-      
-      RestContext.response.responseBody = Blob.valueOf(JSON.serialize(thisContract));
+      if(isValidSalesforceId(contractId, Contract.class)){
+        handleSingle(contractId);
+      } else {
+        handleCollection();
+      }      
     } catch (Exception e) {
       handleRestException(e, 'Contract');
     }
+  }
+
+  /**
+  * @description handleSingle > One Contract
+  * @param String contractId 
+  **/
+  private static void handleSingle(Id contractId){
+    // collect Contract field list
+    Map<String, Schema.SObjectField> fieldMap = Contract.sObjectType.getDescribe().fields.getMap();
+    List<String> fieldNames = new List<String>(fieldMap.keySet());
+    Contract thisContract = Database.query('SELECT ' + String.join(fieldNames, ',') + ' FROM Contract  WHERE Id = \'' + contractId + '\'');
+    //Contract thisContract = [SELECT Id, FirstName, LastName, Email, Phone FROM Contract WHERE Id = :contractId] ;
+    RestContext.response.responseBody = Blob.valueOf(JSON.serialize(thisContract));
+  }
+
+  /**
+  * @description handleCollection > Contract List
+  **/
+  private static void handleCollection(){
+    // collect Contract field list
+    Map<String, Schema.SObjectField> fieldMap = Contract.sObjectType.getDescribe().fields.getMap();
+    List<String> fieldNames = new List<String>(fieldMap.keySet());
+    List<Contract> thisContracts = Database.query('SELECT ' + String.join(fieldNames, ',') + ' FROM Contract LIMIT 20');
+    RestContext.response.responseBody = Blob.valueOf(JSON.serialize(thisContracts));
   }
 
   /**
