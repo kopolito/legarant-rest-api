@@ -40,7 +40,6 @@ global with sharing class ContractRest extends RestManager{
     Map<String, Schema.SObjectField> fieldMap = Contract.sObjectType.getDescribe().fields.getMap();
     List<String> fieldNames = new List<String>(fieldMap.keySet());
     Contract thisContract = Database.query('SELECT ' + String.join(fieldNames, ',') + ' FROM Contract  WHERE Id = \'' + contractId + '\'');
-    //Contract thisContract = [SELECT Id, FirstName, LastName, Email, Phone FROM Contract WHERE Id = :contractId] ;
     RestContext.response.responseBody = Blob.valueOf(JSON.serialize(thisContract));
   }
 
