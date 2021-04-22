@@ -131,11 +131,7 @@ global with sharing class ContactRest extends RestManager {
 			}
 			// manage error
 			if (result.getErrors().size() != 0) {
-				if (result.getErrors()[0] instanceof Database.DuplicateError) {
-					throw new DuplicateException();
-				} else {
-					throw new ParamException(result.getErrors()[0].message);
-				}
+				throw new ParamException(result.getErrors()[0].message);
 			}
 			// Send response
 			RestContext.response.statusCode = 200;
@@ -149,7 +145,7 @@ global with sharing class ContactRest extends RestManager {
 	 * @description PATCH
 	 **/
 	@HttpPatch
-	global static void updateContactFields() {
+	global static void updateContact() {
 		RestContext.response.headers.put('Content-Type', 'application/json');
 		try {
 			Id contactId = RestContext.request.requestURI.substring(
@@ -160,11 +156,7 @@ global with sharing class ContactRest extends RestManager {
 			GenericResult result = new GenericResult(Database.update(thisContact, false));
 			// manage error
 			if (result.getErrors().size() != 0) {
-				if (result.getErrors()[0] instanceof Database.DuplicateError) {
-					throw new DuplicateException();
-				} else {
-					throw new ParamException(result.getErrors()[0].message);
-				}
+				throw new ParamException(result.getErrors()[0].message);
 			}
 			// Send response
 			RestContext.response.statusCode = 200;
@@ -190,18 +182,5 @@ global with sharing class ContactRest extends RestManager {
 			thisContact.put(fieldName, params.get(fieldName));
 		}
 		return thisContact;
-	}
-
-	public static Contact getContactById(Id contactId) {
-		// collect Contact field list
-		Map<String, Schema.SObjectField> fieldMap = Contact.sObjectType.getDescribe().fields.getMap();
-		List<String> fieldNames = new List<String>(fieldMap.keySet());
-		return Database.query(
-			'SELECT ' +
-			String.join(fieldNames, ',') +
-			' FROM Contact  WHERE Id = \'' +
-			contactId +
-			'\''
-		);
 	}
 }

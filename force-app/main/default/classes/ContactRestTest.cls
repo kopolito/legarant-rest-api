@@ -73,6 +73,26 @@ private class ContactRestTest {
 	}
 
 	@isTest
+	static void testGetContactWithInvalidId() {
+		// Set up a test request
+		RestRequest request = new RestRequest();
+		RestResponse res = new RestResponse();
+		request.requestUri = 'https://https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contacts/0031x3oqAAD';
+		request.httpMethod = 'GET';
+		RestContext.request = request;
+		RestContext.response = res;
+		// Call the method to test
+		Test.startTest();
+		ContactRest.getContactById();
+		Test.stopTest();
+		// Verify results
+		String testBlob = res.responseBody.toString();
+		System.assert(testBlob.contains('Id is not a valid Id'), 'Bad response');
+		System.assert(testBlob.contains('MISSING_PARAM'), 'Bad response');
+		System.assertEquals(400, RestContext.response.statusCode, 'Bad response code');
+	}
+
+	@isTest
 	static void testDeleteContact() {
 		Contact contact = TestDataFactory.createContact('aaa', 'bbb', 'aaa@bbb.com');
 		// Set up a test request
@@ -220,6 +240,28 @@ private class ContactRestTest {
 	}
 
 	@isTest
+	static void testCreateContactWithNoJSONParam() {
+		// Set up a test request
+		RestRequest request = new RestRequest();
+		RestResponse res = new RestResponse();
+		request.requestUri = 'https://https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contacts/';
+		request.httpMethod = 'POST';
+		request.headers.put('Content-Type', 'application/json');
+		request.requestBody = Blob.valueOf('abcdefgh');
+		RestContext.request = request;
+		RestContext.response = res;
+		// Call the method to test
+		Test.startTest();
+		ContactRest.createContact();
+		Test.stopTest();
+		// Verify results
+		System.assertEquals(400, RestContext.response.statusCode, 'Bad status code');
+		String testBlob = res.responseBody.toString();
+		System.assert(testBlob.contains('BAD_PARAMS'), 'Bad response code');
+		System.assert(testBlob.contains('Params are not in JSON Format'), 'Bad response message');
+	}
+
+	@isTest
 	static void testCreateContactDuplicate() {
 		Contact contact = TestDataFactory.createContact('aaa', 'bbb', 'aaa@bbb.com');
 		// Set up a test request
@@ -241,54 +283,207 @@ private class ContactRestTest {
 		System.assert(testBlob.contains(contact.Id), 'Should contain Id');
 	}
 
-	/*
-    @isTest static void testUpsertContact() {
-        // 1. Insert new record
-        ID contact1Id = ContactRest.upsertContact(
-                'Ferocious chipmunk', 'New', 'Phone', 'Low', null);
-        // Verify new record was created
-        System.assert(Contact1Id != null);
-        Contact contact1 = [SELECT Id,Subject FROM Contact WHERE Id=:contact1Id];
-        System.assert(contact1 != null);
-        System.assertEquals(contact1.Subject, 'Ferocious chipmunk');
-        // 2. Update status of existing record to Working
-        ID contact2Id = ContactRest.upsertContact(
-                'Ferocious chipmunk', 'Working', 'Phone', 'Low', contact1Id);
-        // Verify record was updated
-        System.assertEquals(contact1Id, contact2Id);
-        Contact contact2 = [SELECT Id,Status FROM Contact WHERE Id=:contact2Id];
-        System.assert(contact2 != null);
-        System.assertEquals(contact2.Status, 'Working');
-    }    
-    @isTest static void testUpdateContactFields() {
-        Id recordId = createTestRecord();
-        RestRequest request = new RestRequest();
-        request.requestUri =
-            'https://yourInstance.salesforce.com/services/apexrest/Contacts/'
-            + recordId;
-        request.httpMethod = 'PATCH';
-        request.addHeader('Content-Type', 'application/json');
-        request.requestBody = Blob.valueOf('{"status": "Working"}');
-        RestContext.request = request;
-        // Update status of existing record to Working
-        ID thisContactId = ContactRest.updateContactFields();
-        // Verify record was updated
-        System.assert(thisContactId != null);
-        Contact thisContact = [SELECT Id,Status FROM Contact WHERE Id=:thisContactId];
-        System.assert(thisContact != null);
-        System.assertEquals(thisContact.Status, 'Working');
-    }  
-    // Helper method
-    static Id createTestRecord() {
-        // Create test record
-        Contact contactTest = new Contact(
-            Subject='Test record',
-            Status='New',
-            Origin='Phone',
-            Priority='Medium');
-        insert contactTest;
-        return contactTest.Id;
-    }          
-}
-*/
+	// PUT
+	@isTest
+	static void testUpsertContact() {
+		// Set up a test request
+		RestRequest request = new RestRequest();
+		RestResponse res = new RestResponse();
+		request.requestUri = 'https://https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contacts/';
+		request.httpMethod = 'POST';
+		request.headers.put('Content-Type', 'application/json');
+		request.requestBody = Blob.valueOf('{"LastName": "aaa", "Firstname": "bbb", "Email": "aaa@bbb.com"}');
+		RestContext.request = request;
+		RestContext.response = res;
+		// Call the method to test
+		Test.startTest();
+		ContactRest.upsertContact();
+		Test.stopTest();
+		// Verify results
+		System.assertEquals(200, RestContext.response.statusCode, 'Bad response code');
+		String testBlob = res.responseBody.toString();
+		System.assert(testBlob.contains('aaa@bbb.com'), 'Bad response');
+	}
+
+	@isTest
+	static void testUpsertContactWithBadParam() {
+		// Set up a test request
+		RestRequest request = new RestRequest();
+		RestResponse res = new RestResponse();
+		request.requestUri = 'https://https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contacts/';
+		request.httpMethod = 'POST';
+		request.headers.put('Content-Type', 'application/json');
+		request.requestBody = Blob.valueOf('{"Lastame": "aaa", "Firstname": "bbb", "Email": "aaa@bbb.com"}');
+		RestContext.request = request;
+		RestContext.response = res;
+		// Call the method to test
+		Test.startTest();
+		ContactRest.upsertContact();
+		Test.stopTest();
+		// Verify results
+		System.assertEquals(400, RestContext.response.statusCode, 'Bad response code');
+		String testBlob = res.responseBody.toString();
+		System.assert(testBlob.contains('BAD_PARAM'), 'Bad response');
+	}
+
+	@isTest
+	static void testUpsertContactWithBadEmail() {
+		// Set up a test request
+		RestRequest request = new RestRequest();
+		RestResponse res = new RestResponse();
+		request.requestUri = 'https://https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contacts/';
+		request.httpMethod = 'POST';
+		request.headers.put('Content-Type', 'application/json');
+		request.requestBody = Blob.valueOf('{"LastName": "aaa", "Firstname": "bbb", "Email": "bbb.com"}');
+		RestContext.request = request;
+		RestContext.response = res;
+		// Call the method to test
+		Test.startTest();
+		ContactRest.upsertContact();
+		Test.stopTest();
+		// Verify results
+		System.assertEquals(400, RestContext.response.statusCode, 'Bad status code');
+		String testBlob = res.responseBody.toString();
+		System.assert(testBlob.contains('BAD_PARAM'), 'Bad response code');
+		System.assert(testBlob.contains('Email: invalid email address'), 'Bad message');
+	}
+
+	@isTest
+	static void testUpsertContactWithMissingParam() {
+		// Set up a test request
+		RestRequest request = new RestRequest();
+		RestResponse res = new RestResponse();
+		request.requestUri = 'https://https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contacts/';
+		request.httpMethod = 'POST';
+		request.headers.put('Content-Type', 'application/json');
+		request.requestBody = Blob.valueOf('{"LastName": "aaa", "FirstName": "bbb"}');
+		RestContext.request = request;
+		RestContext.response = res;
+		// Call the method to test
+		Test.startTest();
+		ContactRest.upsertContact();
+		Test.stopTest();
+		// Verify results
+		System.assertEquals(400, RestContext.response.statusCode, 'Bad status code');
+		String testBlob = res.responseBody.toString();
+		System.assert(testBlob.contains('BAD_PARAMS'), 'Bad response code');
+		System.assert(testBlob.contains('Required fields are missing'), 'Bad response message');
+	}
+
+	@isTest
+	static void testUpsertContactWithNoJSONParam() {
+		// Set up a test request
+		RestRequest request = new RestRequest();
+		RestResponse res = new RestResponse();
+		request.requestUri = 'https://https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contacts/';
+		request.httpMethod = 'POST';
+		request.headers.put('Content-Type', 'application/json');
+		request.requestBody = Blob.valueOf('abcdefgh');
+		RestContext.request = request;
+		RestContext.response = res;
+		// Call the method to test
+		Test.startTest();
+		ContactRest.upsertContact();
+		Test.stopTest();
+		// Verify results
+		System.assertEquals(400, RestContext.response.statusCode, 'Bad status code');
+		String testBlob = res.responseBody.toString();
+		System.assert(testBlob.contains('BAD_PARAMS'), 'Bad response code');
+		System.assert(testBlob.contains('Params are not in JSON Format'), 'Bad response message');
+	}
+
+	@isTest
+	static void testUpsertContactDuplicate() {
+		Contact contact = TestDataFactory.createContact('aaa', 'bbb', 'aaa@bbb.com');
+		// Set up a test request
+		RestRequest request = new RestRequest();
+		RestResponse res = new RestResponse();
+		request.requestUri = 'https://https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contacts/';
+		request.httpMethod = 'POST';
+		request.headers.put('Content-Type', 'application/json');
+		request.requestBody = Blob.valueOf('{"LastName": "bbb", "Firstname": "ccc", "Email": "aaa@bbb.com"}');
+		RestContext.request = request;
+		RestContext.response = res;
+		// Call the method to test
+		Test.startTest();
+		ContactRest.upsertContact();
+		Test.stopTest();
+		// Verify results
+		System.assertEquals(200, RestContext.response.statusCode, 'Bad response code');
+		String testBlob = res.responseBody.toString();
+		System.assert(testBlob.contains(contact.Id), 'Should contain Id');
+	}
+	//////////////////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////////////
+	// PATCH
+	@isTest
+	static void testUpdateContact() {
+		Contact contact = TestDataFactory.createContact('aaa', 'bbb', 'aaa@bbb.com');
+		// Set up a test request
+		RestRequest request = new RestRequest();
+		RestResponse res = new RestResponse();
+		request.requestUri =
+			'https://https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contacts/' + contact.Id;
+		request.httpMethod = 'PATCH';
+		request.headers.put('Content-Type', 'application/json');
+		request.requestBody = Blob.valueOf('{"LastName": "bbb", "Firstname": "aaa", "Email": "aaa@bbb.com"}');
+		RestContext.request = request;
+		RestContext.response = res;
+		// Call the method to test
+		Test.startTest();
+		ContactRest.updateContact();
+		Test.stopTest();
+		// Verify results
+		System.assertEquals(200, RestContext.response.statusCode, 'Bad response code');
+		String testBlob = res.responseBody.toString();
+		System.assert(testBlob.contains('aaa@bbb.com'), 'Bad response');
+	}
+
+	@isTest
+	static void testUpdateContactWithBadParam() {
+		Contact contact = TestDataFactory.createContact('aaa', 'bbb', 'aaa@bbb.com');
+		// Set up a test request
+		RestRequest request = new RestRequest();
+		RestResponse res = new RestResponse();
+		request.requestUri =
+			'https://https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contacts/' + contact.Id;
+		request.httpMethod = 'PATCH';
+		request.headers.put('Content-Type', 'application/json');
+		request.requestBody = Blob.valueOf('{"Lastame": "aaa", "Firstname": "bbb", "Email": "aaa@bbb.com"}');
+		RestContext.request = request;
+		RestContext.response = res;
+		// Call the method to test
+		Test.startTest();
+		ContactRest.updateContact();
+		Test.stopTest();
+		// Verify results
+		System.assertEquals(400, RestContext.response.statusCode, 'Bad response code');
+		String testBlob = res.responseBody.toString();
+		System.assert(testBlob.contains('BAD_PARAM'), 'Bad response');
+	}
+
+	@isTest
+	static void testUpdateContactWithBadEmail() {
+		Contact contact = TestDataFactory.createContact('aaa', 'bbb', 'aaa@bbb.com');
+		// Set up a test request
+		RestRequest request = new RestRequest();
+		RestResponse res = new RestResponse();
+		request.requestUri =
+			'https://https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contacts/' + contact.Id;
+		request.httpMethod = 'PATCH';
+		request.headers.put('Content-Type', 'application/json');
+		request.requestBody = Blob.valueOf('{"LastName": "aaa", "Firstname": "bbb", "Email": "bbb.com"}');
+		RestContext.request = request;
+		RestContext.response = res;
+		// Call the method to test
+		Test.startTest();
+		ContactRest.updateContact();
+		Test.stopTest();
+		// Verify results
+		System.assertEquals(400, RestContext.response.statusCode, 'Bad status code');
+		String testBlob = res.responseBody.toString();
+		System.assert(testBlob.contains('BAD_PARAM'), 'Bad response code');
+		System.assert(testBlob.contains('Email: invalid email address'), 'Bad message');
+	}
 }
