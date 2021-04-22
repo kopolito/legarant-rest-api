@@ -1,13 +1,13 @@
 /**
- * @description       : 
+ * @description       :
  * @author            : Etienne Knoerr
- * @group             : 
- * @last modified on  : 2021-04-21
+ * @group             :
+ * @last modified on  : 2021-04-22
  * @last modified by  : Etienne Knoerr
- * Modifications Log 
+ * Modifications Log
  * Ver   Date         Author           Modification
  * 1.0   2021-04-21   Etienne Knoerr   Initial Version
-**/
+ **/
 @IsTest
 public class TestDataFactory {
 	/**
@@ -19,7 +19,7 @@ public class TestDataFactory {
 		return account;
 	}
 
-   /**
+	/**
 	 * CREATE A CONTACT FOR AN ACCOUNT
 	 */
 	public static Contact createContactForAccount(Account account, String lastName, String firstName) {
@@ -31,31 +31,33 @@ public class TestDataFactory {
 	/**
 	 * CREATE A CONTACT
 	 */
-	public static Contact createContact(String lastName, String firstName) {
-		Contact contact = new Contact(LastName = lastName, FirstName = firstName);
+	public static Contact createContact(String lastName, String firstName, String email) {
+		Contact contact = new Contact(LastName = lastName, FirstName = firstName, Email = email);
 		insert contact;
 		return contact;
 	}
-    /**
+	/**
 	 * CREATE A CONTACT FOR AN ACCOUNT
 	 */
 	public static List<Contract> createContractsForAccount(Account account, Integer count) {
-        List<Contract> contracts = new List<Contract>();
-        for (Integer i = 0; i < count; i++) {
-            contracts.add(new Contract(StartDate = Date.today(), ContractTerm = 5 + i, AccountId = account.id, Status = 'Draft'));
-        }
+		List<Contract> contracts = new List<Contract>();
+		for (Integer i = 0; i < count; i++) {
+			contracts.add(
+				new Contract(StartDate = Date.today(), ContractTerm = 5 + i, AccountId = account.id, Status = 'Draft')
+			);
+		}
 		insert contracts;
 		return contracts;
 	}
 
-    /**
+	/**
 	 * CREATE PRODUCTS
 	 */
 	public static List<Product2> createProducts(Integer count) {
-        List<Product2> products = new List<Product2>();
-        for (Integer i = 0; i < count; i++) {
-            products.add(new Product2(Name = 'Prod_' + i, ProductCode = 'P' + i));
-        }
+		List<Product2> products = new List<Product2>();
+		for (Integer i = 0; i < count; i++) {
+			products.add(new Product2(Name = 'Prod_' + i, ProductCode = 'P' + i));
+		}
 		insert products;
 		return products;
 	}
