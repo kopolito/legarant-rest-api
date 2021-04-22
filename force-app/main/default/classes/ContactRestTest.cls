@@ -17,7 +17,7 @@ private class ContactRestTest {
 		RestRequest request = new RestRequest();
 		RestResponse res = new RestResponse();
 		request.requestUri =
-			'https://https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contacts/' + contact.id;
+			'https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contacts/' + contact.id;
 		request.httpMethod = 'GET';
 		RestContext.request = request;
 		RestContext.response = res;
@@ -37,7 +37,7 @@ private class ContactRestTest {
 		// Set up a test request
 		RestRequest request = new RestRequest();
 		RestResponse res = new RestResponse();
-		request.requestUri = 'https://https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contacts/';
+		request.requestUri = 'https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contacts/';
 		request.httpMethod = 'GET';
 		RestContext.request = request;
 		RestContext.response = res;
@@ -57,7 +57,7 @@ private class ContactRestTest {
 		// Set up a test request
 		RestRequest request = new RestRequest();
 		RestResponse res = new RestResponse();
-		request.requestUri = 'https://https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contacts/0031x000016W3oqAAD';
+		request.requestUri = 'https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contacts/0031x000016W3oqAAD';
 		request.httpMethod = 'GET';
 		RestContext.request = request;
 		RestContext.response = res;
@@ -77,7 +77,7 @@ private class ContactRestTest {
 		// Set up a test request
 		RestRequest request = new RestRequest();
 		RestResponse res = new RestResponse();
-		request.requestUri = 'https://https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contacts/0031x3oqAAD';
+		request.requestUri = 'https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contacts/0031x3oqAAD';
 		request.httpMethod = 'GET';
 		RestContext.request = request;
 		RestContext.response = res;
@@ -99,7 +99,7 @@ private class ContactRestTest {
 		RestRequest request = new RestRequest();
 		RestResponse res = new RestResponse();
 		request.requestUri =
-			'https://https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contacts/' + contact.id;
+			'https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contacts/' + contact.id;
 		request.httpMethod = 'DELETE';
 		RestContext.request = request;
 		RestContext.response = res;
@@ -118,7 +118,7 @@ private class ContactRestTest {
 		// Set up a test request
 		RestRequest request = new RestRequest();
 		RestResponse res = new RestResponse();
-		request.requestUri = 'https://https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contacts/0031x000016W3oqAAD';
+		request.requestUri = 'https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contacts/0031x000016W3oqAAD';
 		request.httpMethod = 'DELETE';
 		RestContext.request = request;
 		RestContext.response = res;
@@ -138,7 +138,7 @@ private class ContactRestTest {
 		// Set up a test request
 		RestRequest request = new RestRequest();
 		RestResponse res = new RestResponse();
-		request.requestUri = 'https://https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contacts/';
+		request.requestUri = 'https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contacts/';
 		request.httpMethod = 'DELETE';
 		RestContext.request = request;
 		RestContext.response = res;
@@ -158,7 +158,7 @@ private class ContactRestTest {
 		// Set up a test request
 		RestRequest request = new RestRequest();
 		RestResponse res = new RestResponse();
-		request.requestUri = 'https://https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contacts/';
+		request.requestUri = 'https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contacts/';
 		request.httpMethod = 'POST';
 		request.headers.put('Content-Type', 'application/json');
 		request.requestBody = Blob.valueOf('{"LastName": "aaa", "Firstname": "bbb", "Email": "aaa@bbb.com"}');
@@ -179,7 +179,7 @@ private class ContactRestTest {
 		// Set up a test request
 		RestRequest request = new RestRequest();
 		RestResponse res = new RestResponse();
-		request.requestUri = 'https://https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contacts/';
+		request.requestUri = 'https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contacts/';
 		request.httpMethod = 'POST';
 		request.headers.put('Content-Type', 'application/json');
 		request.requestBody = Blob.valueOf('{"Lastame": "aaa", "Firstname": "bbb", "Email": "aaa@bbb.com"}');
@@ -200,7 +200,7 @@ private class ContactRestTest {
 		// Set up a test request
 		RestRequest request = new RestRequest();
 		RestResponse res = new RestResponse();
-		request.requestUri = 'https://https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contacts/';
+		request.requestUri = 'https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contacts/';
 		request.httpMethod = 'POST';
 		request.headers.put('Content-Type', 'application/json');
 		request.requestBody = Blob.valueOf('{"LastName": "aaa", "Firstname": "bbb", "Email": "bbb.com"}');
@@ -222,7 +222,7 @@ private class ContactRestTest {
 		// Set up a test request
 		RestRequest request = new RestRequest();
 		RestResponse res = new RestResponse();
-		request.requestUri = 'https://https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contacts/';
+		request.requestUri = 'https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contacts/';
 		request.httpMethod = 'POST';
 		request.headers.put('Content-Type', 'application/json');
 		request.requestBody = Blob.valueOf('{"LastName": "aaa", "FirstName": "bbb"}');
@@ -244,7 +244,7 @@ private class ContactRestTest {
 		// Set up a test request
 		RestRequest request = new RestRequest();
 		RestResponse res = new RestResponse();
-		request.requestUri = 'https://https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contacts/';
+		request.requestUri = 'https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contacts/';
 		request.httpMethod = 'POST';
 		request.headers.put('Content-Type', 'application/json');
 		request.requestBody = Blob.valueOf('abcdefgh');
@@ -267,7 +267,7 @@ private class ContactRestTest {
 		// Set up a test request
 		RestRequest request = new RestRequest();
 		RestResponse res = new RestResponse();
-		request.requestUri = 'https://https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contacts/';
+		request.requestUri = 'https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contacts/';
 		request.httpMethod = 'POST';
 		request.headers.put('Content-Type', 'application/json');
 		request.requestBody = Blob.valueOf('{"LastName": "bbb", "Firstname": "ccc", "Email": "aaa@bbb.com"}');
@@ -289,7 +289,7 @@ private class ContactRestTest {
 		// Set up a test request
 		RestRequest request = new RestRequest();
 		RestResponse res = new RestResponse();
-		request.requestUri = 'https://https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contacts/';
+		request.requestUri = 'https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contacts/';
 		request.httpMethod = 'POST';
 		request.headers.put('Content-Type', 'application/json');
 		request.requestBody = Blob.valueOf('{"LastName": "aaa", "Firstname": "bbb", "Email": "aaa@bbb.com"}');
@@ -310,7 +310,7 @@ private class ContactRestTest {
 		// Set up a test request
 		RestRequest request = new RestRequest();
 		RestResponse res = new RestResponse();
-		request.requestUri = 'https://https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contacts/';
+		request.requestUri = 'https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contacts/';
 		request.httpMethod = 'POST';
 		request.headers.put('Content-Type', 'application/json');
 		request.requestBody = Blob.valueOf('{"Lastame": "aaa", "Firstname": "bbb", "Email": "aaa@bbb.com"}');
@@ -331,7 +331,7 @@ private class ContactRestTest {
 		// Set up a test request
 		RestRequest request = new RestRequest();
 		RestResponse res = new RestResponse();
-		request.requestUri = 'https://https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contacts/';
+		request.requestUri = 'https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contacts/';
 		request.httpMethod = 'POST';
 		request.headers.put('Content-Type', 'application/json');
 		request.requestBody = Blob.valueOf('{"LastName": "aaa", "Firstname": "bbb", "Email": "bbb.com"}');
@@ -353,7 +353,7 @@ private class ContactRestTest {
 		// Set up a test request
 		RestRequest request = new RestRequest();
 		RestResponse res = new RestResponse();
-		request.requestUri = 'https://https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contacts/';
+		request.requestUri = 'https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contacts/';
 		request.httpMethod = 'POST';
 		request.headers.put('Content-Type', 'application/json');
 		request.requestBody = Blob.valueOf('{"LastName": "aaa", "FirstName": "bbb"}');
@@ -375,7 +375,7 @@ private class ContactRestTest {
 		// Set up a test request
 		RestRequest request = new RestRequest();
 		RestResponse res = new RestResponse();
-		request.requestUri = 'https://https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contacts/';
+		request.requestUri = 'https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contacts/';
 		request.httpMethod = 'POST';
 		request.headers.put('Content-Type', 'application/json');
 		request.requestBody = Blob.valueOf('abcdefgh');
@@ -398,7 +398,7 @@ private class ContactRestTest {
 		// Set up a test request
 		RestRequest request = new RestRequest();
 		RestResponse res = new RestResponse();
-		request.requestUri = 'https://https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contacts/';
+		request.requestUri = 'https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contacts/';
 		request.httpMethod = 'POST';
 		request.headers.put('Content-Type', 'application/json');
 		request.requestBody = Blob.valueOf('{"LastName": "bbb", "Firstname": "ccc", "Email": "aaa@bbb.com"}');
@@ -424,7 +424,7 @@ private class ContactRestTest {
 		RestRequest request = new RestRequest();
 		RestResponse res = new RestResponse();
 		request.requestUri =
-			'https://https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contacts/' + contact.Id;
+			'https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contacts/' + contact.Id;
 		request.httpMethod = 'PATCH';
 		request.headers.put('Content-Type', 'application/json');
 		request.requestBody = Blob.valueOf('{"LastName": "bbb", "Firstname": "aaa", "Email": "aaa@bbb.com"}');
@@ -447,7 +447,7 @@ private class ContactRestTest {
 		RestRequest request = new RestRequest();
 		RestResponse res = new RestResponse();
 		request.requestUri =
-			'https://https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contacts/' + contact.Id;
+			'https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contacts/' + contact.Id;
 		request.httpMethod = 'PATCH';
 		request.headers.put('Content-Type', 'application/json');
 		request.requestBody = Blob.valueOf('{"Lastame": "aaa", "Firstname": "bbb", "Email": "aaa@bbb.com"}');
@@ -470,7 +470,7 @@ private class ContactRestTest {
 		RestRequest request = new RestRequest();
 		RestResponse res = new RestResponse();
 		request.requestUri =
-			'https://https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contacts/' + contact.Id;
+			'https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contacts/' + contact.Id;
 		request.httpMethod = 'PATCH';
 		request.headers.put('Content-Type', 'application/json');
 		request.requestBody = Blob.valueOf('{"LastName": "aaa", "Firstname": "bbb", "Email": "bbb.com"}');

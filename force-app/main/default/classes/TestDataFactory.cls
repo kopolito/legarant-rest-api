@@ -37,7 +37,7 @@ public class TestDataFactory {
 		return contact;
 	}
 	/**
-	 * CREATE A CONTACT FOR AN ACCOUNT
+	 * CREATE CONTRACTS FOR AN ACCOUNT
 	 */
 	public static List<Contract> createContractsForAccount(Account account, Integer count) {
 		List<Contract> contracts = new List<Contract>();
@@ -48,6 +48,20 @@ public class TestDataFactory {
 		}
 		insert contracts;
 		return contracts;
+	}
+
+	/**
+	 * CREATE CONTRACTS FOR AN ACCOUNT
+	 */
+	public static Contract createContractForAccount(Account account) {
+		Contract contract = new Contract(
+			StartDate = Date.today(),
+			ContractTerm = 5,
+			AccountId = account.id,
+			Status = 'Draft'
+		);
+		insert contract;
+		return contract;
 	}
 
 	/**

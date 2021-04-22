@@ -39,7 +39,6 @@ global with sharing class ContactRest extends RestManager {
 				contactId +
 				'\''
 			);
-			//Contact thisContact = [SELECT Id, FirstName, LastName, Email, Phone FROM Contact WHERE Id = :contactId] ;
 			RestContext.response.responseBody = Blob.valueOf(JSON.serialize(thisContact));
 			RestContext.response.statusCode = 200;
 		} catch (Exception e) {

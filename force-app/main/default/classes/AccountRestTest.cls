@@ -17,7 +17,7 @@ private class AccountRestTest {
 		RestRequest request = new RestRequest();
 		RestResponse res = new RestResponse();
 		request.requestUri =
-			'https://https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Accounts/' + account.id;
+			'https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Accounts/' + account.id;
 		request.httpMethod = 'GET';
 		RestContext.request = request;
 		RestContext.response = res;
@@ -37,7 +37,7 @@ private class AccountRestTest {
 		// Set up a test request
 		RestRequest request = new RestRequest();
 		RestResponse res = new RestResponse();
-		request.requestUri = 'https://https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Accounts/';
+		request.requestUri = 'https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Accounts/';
 		request.httpMethod = 'GET';
 		RestContext.request = request;
 		RestContext.response = res;
@@ -57,7 +57,7 @@ private class AccountRestTest {
 		// Set up a test request
 		RestRequest request = new RestRequest();
 		RestResponse res = new RestResponse();
-		request.requestUri = 'https://https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Accounts/0011X00000oWB9TQAB';
+		request.requestUri = 'https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Accounts/0011X00000oWB9TQAB';
 		request.httpMethod = 'GET';
 		RestContext.request = request;
 		RestContext.response = res;
@@ -77,7 +77,7 @@ private class AccountRestTest {
 		// Set up a test request
 		RestRequest request = new RestRequest();
 		RestResponse res = new RestResponse();
-		request.requestUri = 'https://https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Accounts/0031x3oqAAD';
+		request.requestUri = 'https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Accounts/0031x3oqAAD';
 		request.httpMethod = 'GET';
 		RestContext.request = request;
 		RestContext.response = res;

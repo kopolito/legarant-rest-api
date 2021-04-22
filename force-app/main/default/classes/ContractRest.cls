@@ -2,7 +2,7 @@
  * @description       : Contracts REST Interface
  * @author            : Etienne Knoerr
  * @group             : 
- * @last modified on  : 2021-04-16
+ * @last modified on  : 2021-04-22
  * @last modified by  : Etienne Knoerr
  * Modifications Log 
  * Ver   Date         Author           Modification
@@ -12,24 +12,34 @@
 @RestResource(urlMapping='/Contracts/*')
 global with sharing class ContractRest extends RestManager{
   /**
-   * GET
-   */ 
-  @HttpGet
-  global static void getContractById() {
-    RestContext.response.headers.put('Content-Type', 'application/json');
-    try{
-      String contractId = RestContext.request.requestURI.substring(
-        RestContext.request.requestURI.lastIndexOf('/') + 1
-      );
-      if(isValidSalesforceId(contractId, Contract.class)){
-        handleSingle(contractId);
-      } else {
-        handleCollection();
-      }      
-    } catch (Exception e) {
-      handleRestException(e, 'Contract');
-    }
-  }
+	 * @description GET
+	 **/
+	@HttpGet
+	global static void getContractById() {
+		RestContext.response.headers.put('Content-Type', 'application/json');
+		try {
+			String contractId = RestContext.request.requestURI.substring(
+				RestContext.request.requestURI.lastIndexOf('/') + 1
+			);
+			if (!isValidSalesforceId(contractId, Contract.class)) {
+				throw new System.StringException();
+			}
+			// collect Contract field list
+			Map<String, Schema.SObjectField> fieldMap = Contract.sObjectType.getDescribe().fields.getMap();
+			List<String> fieldNames = new List<String>(fieldMap.keySet());
+			Contract thisContract = Database.query(
+				'SELECT ' +
+				String.join(fieldNames, ',') +
+				' FROM Contract  WHERE Id = \'' +
+				contractId +
+				'\''
+			);
+			RestContext.response.responseBody = Blob.valueOf(JSON.serialize(thisContract));
+			RestContext.response.statusCode = 200;
+		} catch (Exception e) {
+			handleRestException(e, 'Contract');
+		}
+	}
 
   /**
   * @description handleSingle > One Contract
