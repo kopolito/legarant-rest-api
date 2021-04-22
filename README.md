@@ -1,26 +1,30 @@
-# Legarant
-## REST API
+# idem-apex-backend
 
-Use Yarn
+Prototype de backend Apex
+V 1.1.4
 
+## package installation :
 
+`https://login.salesforce.com/packaging/installPackage.apexp?p0=04t09000000ZoXMAA0`
 
+## Rappels pour la création de package
 
-# Salesforce DX Project: Next Steps
+### Création de l'org de test
 
-Now that you’ve created a Salesforce DX project, what’s next? Here are some documentation resources to get you started.
+`sfdx force:org:create --definitionfile config/project-scratch-def.json --durationdays 30 --setalias scratch -v idem`
 
-## How Do You Plan to Deploy Your Changes?
+### Création du package
 
-Do you want to deploy a set of changes, or create a self-contained application? Choose a [development model](https://developer.salesforce.com/tools/vscode/en/user-guide/development-models).
+`sfdx force:package:create --name ordersandaccounts --description "Orders and Accounts Management" --packagetype Unlocked --path force-app --nonamespace --targetdevhubusername idem`
 
-## Configure Your Salesforce DX Project
+### Création de la version de Package
 
-The `sfdx-project.json` file contains useful configuration information for your project. See [Salesforce DX Project Configuration](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_ws_config.htm) in the _Salesforce DX Developer Guide_ for details about this file.
+`sfdx force:package:version:create -p ordersandaccounts -d force-app -k test1234 --wait 10 --codecoverage -v idem`
 
-## Read All About It
+### installer le package dans l'org de test
 
-- [Salesforce Extensions Documentation](https://developer.salesforce.com/tools/vscode/)
-- [Salesforce CLI Setup Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_intro.htm)
-- [Salesforce DX Developer Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_intro.htm)
-- [Salesforce CLI Command Reference](https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference.htm)
+`sfdx force:package:install --wait 10 --publishwait 10 --package ordersandaccounts@1.1.4-1 -k test1234 -r -u scratch`
+
+### Publication de la version de package
+
+`sfdx force:package:version:promote -p ordersandaccounts@1.1.4-1 -v idem`
