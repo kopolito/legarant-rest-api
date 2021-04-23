@@ -2,7 +2,7 @@
  * @description       :
  * @author            : Etienne Knoerr
  * @group             :
- * @last modified on  : 2021-04-22
+ * @last modified on  : 2021-04-23
  * @last modified by  : Etienne Knoerr
  * Modifications Log
  * Ver   Date         Author           Modification
@@ -10,6 +10,9 @@
  **/
 @isTest
 private class ContactRestTest {
+	/*****************************************************************************************
+	 *** GET
+	 *****************************************************************************************/
 	@isTest
 	static void testGetContact() {
 		Contact contact = TestDataFactory.createContact('aaa', 'bbb', 'aaa@bbb.com');
@@ -92,6 +95,10 @@ private class ContactRestTest {
 		System.assertEquals(400, RestContext.response.statusCode, 'Bad response code');
 	}
 
+	/*****************************************************************************************
+	 *** DELETE
+	 *****************************************************************************************/
+
 	@isTest
 	static void testDeleteContact() {
 		Contact contact = TestDataFactory.createContact('aaa', 'bbb', 'aaa@bbb.com');
@@ -152,6 +159,10 @@ private class ContactRestTest {
 		System.assert(testBlob.contains('MISSING_PARAM'), 'Bad response');
 		System.assertEquals(400, RestContext.response.statusCode, 'Bad response code');
 	}
+
+	/*****************************************************************************************
+	 *** POST
+	 *****************************************************************************************/
 
 	@isTest
 	static void testCreateContact() {
@@ -283,7 +294,10 @@ private class ContactRestTest {
 		System.assert(testBlob.contains(contact.Id), 'Should contain Id');
 	}
 
-	// PUT
+	/*****************************************************************************************
+	 *** PUT
+	 *****************************************************************************************/
+
 	@isTest
 	static void testUpsertContact() {
 		// Set up a test request
@@ -413,10 +427,11 @@ private class ContactRestTest {
 		String testBlob = res.responseBody.toString();
 		System.assert(testBlob.contains(contact.Id), 'Should contain Id');
 	}
-	//////////////////////////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////////////////////////
-	// PATCH
+
+	/*****************************************************************************************
+	 *** PATCH
+	 *****************************************************************************************/
+
 	@isTest
 	static void testUpdateContact() {
 		Contact contact = TestDataFactory.createContact('aaa', 'bbb', 'aaa@bbb.com');

@@ -2,7 +2,7 @@
  * @description       : Contacts REST Interface
  * @author            : Etienne Knoerr
  * @group             :
- * @last modified on  : 2021-04-22
+ * @last modified on  : 2021-04-23
  * @last modified by  : Etienne Knoerr
  * Modifications Log
  * Ver   Date         Author           Modification
@@ -166,7 +166,7 @@ global with sharing class ContactRest extends RestManager {
 	}
 
 	/**
-	 * @description apply pRequest parameters to Contact
+	 * @description apply request parameters to Contact
 	 * @param Contact thisContact
 	 * @return Contact
 	 **/

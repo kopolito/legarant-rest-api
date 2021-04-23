@@ -2,7 +2,7 @@
  * @description       :
  * @author            : Etienne Knoerr
  * @group             :
- * @last modified on  : 2021-04-22
+ * @last modified on  : 2021-04-23
  * @last modified by  : Etienne Knoerr
  * Modifications Log
  * Ver   Date         Author           Modification
@@ -10,6 +10,9 @@
  **/
 @isTest
 private class AccountRestTest {
+	/*****************************************************************************************
+	 *** GET
+	 *****************************************************************************************/
 	@isTest
 	static void testGetAccount() {
 		Account account = TestDataFactory.createAccount('aaa');
