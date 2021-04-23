@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+	<types>
+		<members>*</members>
+		<name>ApexClass</name>
+	</types>
+	<types>
+		<members>*</members>
+		<name>ApexTrigger</name>
+	</types>
+	<types>
+		<members>*</members>
+		<name>ConnectedApp</name>
+	</types>
+	<types>
+		<members>Contact.Active__c</members>
+		<members>Contact.Encrypted_Password__c</members>
+		<members>Contact.ExtId__c</members>
+		<name>CustomField</name>
+	</types>
+	<version>51.0</version>
+</Package>
