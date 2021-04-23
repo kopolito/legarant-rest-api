@@ -2,7 +2,7 @@
  * @description       :
  * @author            : Etienne Knoerr
  * @group             :
- * @last modified on  : 2021-04-22
+ * @last modified on  : 2021-04-23
  * @last modified by  : Etienne Knoerr
  * Modifications Log
  * Ver   Date         Author           Modification
@@ -10,13 +10,9 @@
  **/
 public abstract class RestManager {
 	/**
-	 * Custom Exceptions for custom Error messages
+	 * Custom Exception for custom Error messages
 	 */
-	public virtual class VerbException extends Exception {
-	}
-	public virtual class DuplicateException extends Exception {
-	}
-	public virtual class ParamException extends Exception {
+	public class ParamException extends Exception {
 	}
 	/**
 	 * Standard Salesforce Error response structure
@@ -35,9 +31,9 @@ public abstract class RestManager {
 	public class GenericResult {
 		final Id recordId;
 		final List<Database.Error> errors;
-		public Id getId() {
-			return recordId;
-		}
+		// public Id getId() {
+		// 	return recordId;
+		// }
 		public List<Database.Error> getErrors() {
 			return errors;
 		}
@@ -52,9 +48,9 @@ public abstract class RestManager {
 		public GenericResult(Database.UpsertResult result) {
 			this(result.getId(), result.getErrors());
 		}
-		public GenericResult(Database.DeleteResult result) {
-			this(result.getId(), result.getErrors());
-		}
+		// public GenericResult(Database.DeleteResult result) {
+		// 	this(result.getId(), result.getErrors());
+		// }
 	}
 	/**
 	 * handleRestException
@@ -89,17 +85,6 @@ public abstract class RestManager {
 		RestContext.response.statusCode = statusCode;
 		SalesforceError[] errors = new List<SalesforceError>{ new SalesforceError(errorCode, message) };
 		RestContext.response.responseBody = Blob.valueOf(JSON.serialize(errors));
-	}
-
-	/**
-	 * @description check submitVerb
-	 * @param String verb
-	 **/
-	public static void checkSubmitVerb(String verb) {
-		List<String> verbs = new List<String>{ 'POST', 'PATCH', 'PUT' };
-		if (!verbs.contains(verb)) {
-			throw new VerbException();
-		}
 	}
 
 	/**

@@ -2,7 +2,7 @@
  * @description       : Accounts REST Interface
  * @author            : Etienne Knoerr
  * @group             :
- * @last modified on  : 2021-04-22
+ * @last modified on  : 2021-04-23
  * @last modified by  : Etienne Knoerr
  * Modifications Log
  * Ver   Date         Author           Modification
@@ -34,7 +34,6 @@ global with sharing class AccountRest extends RestManager {
 				accountId +
 				'\''
 			);
-			//Account thisAccount = [SELECT Id, FirstName, LastName, Email, Phone FROM Account WHERE Id = :accountId] ;
 			RestContext.response.responseBody = Blob.valueOf(JSON.serialize(thisAccount));
 			RestContext.response.statusCode = 200;
 		} catch (Exception e) {
