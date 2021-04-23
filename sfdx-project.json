@@ -1,11 +1,17 @@
 {
-  "packageDirectories": [
-    {
-      "path": "force-app",
-      "default": true
+    "packageDirectories": [
+        {
+            "path": "force-app",
+            "default": true,
+            "package": "restapi",
+            "versionName": "ver 0.1",
+            "versionNumber": "0.1.0.NEXT"
+        }
+    ],
+    "namespace": "",
+    "sfdcLoginUrl": "https://legarant2-dev-ed.my.salesforce.com/",
+    "sourceApiVersion": "51.0",
+    "packageAliases": {
+        "restapi": "0Ho09000000fxk8CAA"
     }
-  ],
-  "namespace": "",
-  "sfdcLoginUrl": "https://legarant2-dev-ed.my.salesforce.com/",
-  "sourceApiVersion": "51.0"
 }
