@@ -2,14 +2,14 @@
  * @description       : Accounts REST Interface
  * @author            : Etienne Knoerr
  * @group             :
- * @last modified on  : 2021-04-23
+ * @last modified on  : 2021-04-30
  * @last modified by  : Etienne Knoerr
  * Modifications Log
  * Ver   Date         Author           Modification
  * 1.0   2021-04-15   Etienne Knoerr   Initial Version
  **/
 
-@RestResource(urlMapping='/Accounts/*')
+@RestResource(urlMapping='/accounts/*')
 global with sharing class AccountRest extends RestManager {
 	/**
 	 * GET

@@ -2,13 +2,13 @@
  * @description       : Product2s REST Interface
  * @author            : Etienne Knoerr
  * @group             :
- * @last modified on  : 2021-04-23
+ * @last modified on  : 2021-04-30
  * @last modified by  : Etienne Knoerr
  * Modifications Log
  * Ver   Date         Author           Modification
  * 1.0   2021-04-01   Etienne Knoerr   Initial Version
  **/
-@RestResource(urlMapping='/Products/*')
+@RestResource(urlMapping='/products/*')
 global with sharing class ProductRest extends RestManager {
 	/**
 	 * GET

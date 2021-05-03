@@ -2,14 +2,14 @@
  * @description       : Contracts REST Interface
  * @author            : Etienne Knoerr
  * @group             :
- * @last modified on  : 2021-04-23
+ * @last modified on  : 2021-04-30
  * @last modified by  : Etienne Knoerr
  * Modifications Log
  * Ver   Date         Author           Modification
  * 1.0   2021-04-15   Etienne Knoerr   Initial Version
  **/
 
-@RestResource(urlMapping='/Contracts/*')
+@RestResource(urlMapping='/contracts/*')
 global with sharing class ContractRest extends RestManager {
 	/**
 	 * @description GET
