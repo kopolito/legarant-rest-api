@@ -1,0 +1,14 @@
+{
+	"orgName": "Legarant Rest",
+	"edition": "Developer",
+	"features": [],
+	"settings": {
+		"lightningExperienceSettings": {
+			"enableS1DesktopEnabled": true
+		},
+		"mobileSettings": {
+			"enableS1EncryptedStoragePref2": false
+		}
+	},
+	"language": "en_US"
+}
