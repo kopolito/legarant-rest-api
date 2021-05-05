@@ -2,7 +2,7 @@
  * @description       : Contracts REST Interface
  * @author            : Etienne Knoerr
  * @group             :
- * @last modified on  : 2021-04-30
+ * @last modified on  : 2021-05-05
  * @last modified by  : Etienne Knoerr
  * Modifications Log
  * Ver   Date         Author           Modification
@@ -15,26 +15,37 @@ global with sharing class ContractRest extends RestManager {
 	 * @description GET
 	 **/
 	@HttpGet
-	global static void getContractById() {
+	global static void getContract() {
 		RestContext.response.headers.put('Content-Type', 'application/json');
 		try {
-			String contractId = RestContext.request.requestURI.substring(
-				RestContext.request.requestURI.lastIndexOf('/') + 1
-			);
-			if (!isValidSalesforceId(contractId, Contract.class)) {
-				throw new System.StringException();
-			}
+			// check requestURI pattern
+			Pattern collectionPattern = Pattern.compile('/contracts/?$');
+			Matcher match = collectionPattern.matcher(RestContext.request.requestURI);
+			Boolean getCollection = match.matches();
 			// collect Contract field list
 			Map<String, Schema.SObjectField> fieldMap = Contract.sObjectType.getDescribe().fields.getMap();
 			List<String> fieldNames = new List<String>(fieldMap.keySet());
-			Contract thisContract = Database.query(
-				'SELECT ' +
-				String.join(fieldNames, ',') +
-				' FROM Contract  WHERE Id = \'' +
-				contractId +
-				'\''
-			);
-			RestContext.response.responseBody = Blob.valueOf(JSON.serialize(thisContract));
+
+			if (getCollection) {
+				List<Contract> records = Database.query('SELECT ' + String.join(fieldNames, ',') + ' FROM Contract');
+				RestContext.response.responseBody = Blob.valueOf(JSON.serialize(records));
+			} else {
+				// check Id is valid
+				String recordId = RestContext.request.requestURI.substring(
+					RestContext.request.requestURI.lastIndexOf('/') + 1
+				);
+				if (!isValidSalesforceId(recordId, Contract.class)) {
+					throw new System.StringException();
+				}
+				Contract record = Database.query(
+					'SELECT ' +
+					String.join(fieldNames, ',') +
+					' FROM Contract  WHERE Id = \'' +
+					recordId +
+					'\''
+				);
+				RestContext.response.responseBody = Blob.valueOf(JSON.serialize(record));
+			}
 			RestContext.response.statusCode = 200;
 		} catch (Exception e) {
 			handleRestException(e, 'Contract');

@@ -2,7 +2,7 @@
  * @description       :
  * @author            : Etienne Knoerr
  * @group             :
- * @last modified on  : 2021-04-29
+ * @last modified on  : 2021-05-05
  * @last modified by  : Etienne Knoerr
  * Modifications Log
  * Ver   Date         Author           Modification
@@ -61,7 +61,7 @@ public abstract class RestManager {
 		SalesforceError[] errors = new List<SalesforceError>();
 		// errors.add(new SalesforceError('ERROR', e.getTypeName()));
 		if (e instanceof System.StringException) {
-			setError(400, 'MISSING_PARAM', 'Id is not a valid Id');
+			setError(400, 'MISSING_PARAM', 'Id is not a valid Id : ' + RestContext.request.requestURI);
 		} else if (e instanceof System.JSONException) {
 			setError(400, 'BAD_PARAMS', 'Params are not in JSON Format');
 		} else if (e instanceof RestManager.ParamException) {

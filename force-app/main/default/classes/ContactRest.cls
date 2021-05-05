@@ -2,7 +2,7 @@
  * @description       : Contacts REST Interface
  * @author            : Etienne Knoerr
  * @group             :
- * @last modified on  : 2021-04-30
+ * @last modified on  : 2021-05-05
  * @last modified by  : Etienne Knoerr
  * Modifications Log
  * Ver   Date         Author           Modification
@@ -12,7 +12,6 @@
 /*
 Questions : 
   - si on ne supprime pas, en mettant Active__c à false : autorise-t-on la récupération / modification de contacts inactifs ?
-  - PATCH : passer l'ID en paramètre JSON ou dans l'URL ?
 */
 @RestResource(urlMapping='/contacts/*')
 global with sharing class ContactRest extends RestManager {
@@ -22,35 +21,34 @@ global with sharing class ContactRest extends RestManager {
 	@HttpGet
 	global static void getContact() {
 		RestContext.response.headers.put('Content-Type', 'application/json');
-		RestContext.response.headers.put('Access-Control-Allow-Origin', '*');
 		try {
-			Boolean getCollection = false;
-			String contactId = RestContext.request.requestURI.substring(
-				RestContext.request.requestURI.lastIndexOf('/') + 1
-			);
-			if (!isValidSalesforceId(contactId, Contact.class)) {
-				//throw new System.StringException();
-				getCollection = true;
-			}
+			// check requestURI pattern
+			Pattern collectionPattern = Pattern.compile('/contacts/?$');
+			Matcher match = collectionPattern.matcher(RestContext.request.requestURI);
+			Boolean getCollection = match.matches();
 			// collect Contact field list
 			Map<String, Schema.SObjectField> fieldMap = Contact.sObjectType.getDescribe().fields.getMap();
 			List<String> fieldNames = new List<String>(fieldMap.keySet());
+
 			if (getCollection) {
-				List<Contact> thisContacts = Database.query(
-					'SELECT ' +
-					String.join(fieldNames, ',') +
-					' FROM Contact LIMIT 20'
-				);
-				RestContext.response.responseBody = Blob.valueOf(JSON.serialize(thisContacts));
+				List<Contact> records = Database.query('SELECT ' + String.join(fieldNames, ',') + ' FROM Contact');
+				RestContext.response.responseBody = Blob.valueOf(JSON.serialize(records));
 			} else {
-				Contact thisContact = Database.query(
+				// check Id is valid
+				String recordId = RestContext.request.requestURI.substring(
+					RestContext.request.requestURI.lastIndexOf('/') + 1
+				);
+				if (!isValidSalesforceId(recordId, Contact.class)) {
+					throw new System.StringException();
+				}
+				Contact record = Database.query(
 					'SELECT ' +
 					String.join(fieldNames, ',') +
 					' FROM Contact  WHERE Id = \'' +
-					contactId +
+					recordId +
 					'\''
 				);
-				RestContext.response.responseBody = Blob.valueOf(JSON.serialize(thisContact));
+				RestContext.response.responseBody = Blob.valueOf(JSON.serialize(record));
 			}
 			RestContext.response.statusCode = 200;
 		} catch (Exception e) {

@@ -2,7 +2,7 @@
  * @description       :
  * @author            : Etienne Knoerr
  * @group             :
- * @last modified on  : 2021-04-23
+ * @last modified on  : 2021-05-05
  * @last modified by  : Etienne Knoerr
  * Modifications Log
  * Ver   Date         Author           Modification
@@ -19,14 +19,13 @@ private class AccountRestTest {
 		// Set up a test request
 		RestRequest request = new RestRequest();
 		RestResponse res = new RestResponse();
-		request.requestUri =
-			'https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Accounts/' + account.id;
+		request.requestURI = '/accounts/' + account.id;
 		request.httpMethod = 'GET';
 		RestContext.request = request;
 		RestContext.response = res;
 		// Call the method to test
 		Test.startTest();
-		AccountRest.getAccountById();
+		AccountRest.getAccount();
 		Test.stopTest();
 		// Verify results
 		String testBlob = res.responseBody.toString();
@@ -36,23 +35,26 @@ private class AccountRestTest {
 	}
 
 	@isTest
-	static void testGetAccountWithoutId() {
+	static void testGetAccountList() {
+		Account accountOne = TestDataFactory.createAccount('aaa');
+		Account accountTwo = TestDataFactory.createAccount('bbb');
 		// Set up a test request
 		RestRequest request = new RestRequest();
 		RestResponse res = new RestResponse();
-		request.requestUri = 'https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Accounts/';
+		request.requestURI = '/accounts/';
 		request.httpMethod = 'GET';
 		RestContext.request = request;
 		RestContext.response = res;
 		// Call the method to test
 		Test.startTest();
-		AccountRest.getAccountById();
+		AccountRest.getAccount();
 		Test.stopTest();
 		// Verify results
 		String testBlob = res.responseBody.toString();
-		System.assert(testBlob.contains('Id is not a valid Id'), 'Bad response');
-		System.assert(testBlob.contains('MISSING_PARAM'), 'Bad response');
-		System.assertEquals(400, RestContext.response.statusCode, 'Bad response code');
+		System.assert(testBlob.startsWith('[') && testBlob.endsWith(']'), 'Must contain an array');
+		System.assert(testBlob.contains(accountOne.Id), 'Must contain accountOne : ' + testBlob);
+		System.assert(testBlob.contains(accountTwo.Id), 'Must contain accountTwo');
+		System.assertEquals(200, RestContext.response.statusCode, 'Bad response code');
 	}
 
 	@isTest
@@ -60,13 +62,13 @@ private class AccountRestTest {
 		// Set up a test request
 		RestRequest request = new RestRequest();
 		RestResponse res = new RestResponse();
-		request.requestUri = 'https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Accounts/0011X00000oWB9TQAB';
+		request.requestURI = '/accounts/0011X00000oWB9TQAB';
 		request.httpMethod = 'GET';
 		RestContext.request = request;
 		RestContext.response = res;
 		// Call the method to test
 		Test.startTest();
-		AccountRest.getAccountById();
+		AccountRest.getAccount();
 		Test.stopTest();
 		// Verify results
 		String testBlob = res.responseBody.toString();
@@ -80,13 +82,13 @@ private class AccountRestTest {
 		// Set up a test request
 		RestRequest request = new RestRequest();
 		RestResponse res = new RestResponse();
-		request.requestUri = 'https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Accounts/0031x3oqAAD';
+		request.requestURI = '/accounts/0031x3oqAAD';
 		request.httpMethod = 'GET';
 		RestContext.request = request;
 		RestContext.response = res;
 		// Call the method to test
 		Test.startTest();
-		AccountRest.getAccountById();
+		AccountRest.getAccount();
 		Test.stopTest();
 		// Verify results
 		String testBlob = res.responseBody.toString();

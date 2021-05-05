@@ -2,7 +2,7 @@
  * @description       :
  * @author            : Etienne Knoerr
  * @group             :
- * @last modified on  : 2021-04-23
+ * @last modified on  : 2021-05-05
  * @last modified by  : Etienne Knoerr
  * Modifications Log
  * Ver   Date         Author           Modification
@@ -20,14 +20,13 @@ private class ContractRestTest {
 		// Set up a test request
 		RestRequest request = new RestRequest();
 		RestResponse res = new RestResponse();
-		request.requestUri =
-			'https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contracts/' + contract.id;
+		request.requestURI = '/contracts/' + contract.id;
 		request.httpMethod = 'GET';
 		RestContext.request = request;
 		RestContext.response = res;
 		// Call the method to test
 		Test.startTest();
-		ContractRest.getContractById();
+		ContractRest.getContract();
 		Test.stopTest();
 		// Verify results
 		String testBlob = res.responseBody.toString();
@@ -36,23 +35,27 @@ private class ContractRestTest {
 	}
 
 	@isTest
-	static void testGetContractWithoutId() {
+	static void testGetContractList() {
+		Account account = TestDataFactory.createAccount('aaa');
+		Contract contractOne = TestDataFactory.createContractForAccount(account);
+		Contract contractTwo = TestDataFactory.createContractForAccount(account);
 		// Set up a test request
 		RestRequest request = new RestRequest();
 		RestResponse res = new RestResponse();
-		request.requestUri = 'https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contracts/';
+		request.requestURI = '/contracts/';
 		request.httpMethod = 'GET';
 		RestContext.request = request;
 		RestContext.response = res;
 		// Call the method to test
 		Test.startTest();
-		ContractRest.getContractById();
+		ContractRest.getContract();
 		Test.stopTest();
 		// Verify results
 		String testBlob = res.responseBody.toString();
-		System.assert(testBlob.contains('Id is not a valid Id'), 'Bad response');
-		System.assert(testBlob.contains('MISSING_PARAM'), 'Bad response');
-		System.assertEquals(400, RestContext.response.statusCode, 'Bad response code');
+		System.assert(testBlob.startsWith('[') && testBlob.endsWith(']'), 'Must contain an array');
+		System.assert(testBlob.contains(contractOne.Id), 'Must contain contractOne : ' + testBlob);
+		System.assert(testBlob.contains(contractTwo.Id), 'Must contain contractTwo');
+		System.assertEquals(200, RestContext.response.statusCode, 'Bad response code');
 	}
 
 	@isTest
@@ -60,13 +63,13 @@ private class ContractRestTest {
 		// Set up a test request
 		RestRequest request = new RestRequest();
 		RestResponse res = new RestResponse();
-		request.requestUri = 'https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contracts/0031x3oqAAD';
+		request.requestURI = '/contracts/0031x3oqAAD';
 		request.httpMethod = 'GET';
 		RestContext.request = request;
 		RestContext.response = res;
 		// Call the method to test
 		Test.startTest();
-		ContractRest.getContractById();
+		ContractRest.getContract();
 		Test.stopTest();
 		// Verify results
 		String testBlob = res.responseBody.toString();
@@ -85,7 +88,7 @@ private class ContractRestTest {
 		// Set up a test request
 		RestRequest request = new RestRequest();
 		RestResponse res = new RestResponse();
-		request.requestUri = 'https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contracts/';
+		request.requestURI = '/contracts/';
 		request.httpMethod = 'POST';
 		request.headers.put('Content-Type', 'application/json');
 		String jsonBody =
@@ -112,7 +115,7 @@ private class ContractRestTest {
 		// Set up a test request
 		RestRequest request = new RestRequest();
 		RestResponse res = new RestResponse();
-		request.requestUri = 'https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contracts/';
+		request.requestURI = '/contracts/';
 		request.httpMethod = 'POST';
 		request.headers.put('Content-Type', 'application/json');
 		String jsonBody =
@@ -137,7 +140,7 @@ private class ContractRestTest {
 		// Set up a test request
 		RestRequest request = new RestRequest();
 		RestResponse res = new RestResponse();
-		request.requestUri = 'https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contracts/';
+		request.requestURI = '/contracts/';
 		request.httpMethod = 'POST';
 		request.headers.put('Content-Type', 'application/json');
 		String jsonBody = '{"ContractTerm": 12,"StartDate": "01/04/2021","Status": "Draft"}';
@@ -160,7 +163,7 @@ private class ContractRestTest {
 		// Set up a test request
 		RestRequest request = new RestRequest();
 		RestResponse res = new RestResponse();
-		request.requestUri = 'https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contracts/';
+		request.requestURI = '/contracts/';
 		request.httpMethod = 'POST';
 		request.headers.put('Content-Type', 'application/json');
 		request.requestBody = Blob.valueOf('abcdefgh');
@@ -187,7 +190,7 @@ private class ContractRestTest {
 		// Set up a test request
 		RestRequest request = new RestRequest();
 		RestResponse res = new RestResponse();
-		request.requestUri = 'https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contracts/';
+		request.requestURI = '/contracts/';
 		request.httpMethod = 'PUT';
 		request.headers.put('Content-Type', 'application/json');
 		String jsonBody =
@@ -215,7 +218,7 @@ private class ContractRestTest {
 		// Set up a test request
 		RestRequest request = new RestRequest();
 		RestResponse res = new RestResponse();
-		request.requestUri = 'https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contracts/';
+		request.requestURI = '/contracts/';
 		request.httpMethod = 'PUT';
 		request.headers.put('Content-Type', 'application/json');
 		String jsonBody =
@@ -244,7 +247,7 @@ private class ContractRestTest {
 		// Set up a test request
 		RestRequest request = new RestRequest();
 		RestResponse res = new RestResponse();
-		request.requestUri = 'https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contracts/';
+		request.requestURI = '/contracts/';
 		request.httpMethod = 'POST';
 		request.headers.put('Content-Type', 'application/json');
 		String jsonBody =
@@ -269,7 +272,7 @@ private class ContractRestTest {
 		// Set up a test request
 		RestRequest request = new RestRequest();
 		RestResponse res = new RestResponse();
-		request.requestUri = 'https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contracts/';
+		request.requestURI = '/contracts/';
 		request.httpMethod = 'POST';
 		request.headers.put('Content-Type', 'application/json');
 		String jsonBody = '{"ContractTerm": 12,"StartDate": "01/04/2021","Status": "Draft"}';
@@ -292,7 +295,7 @@ private class ContractRestTest {
 		// Set up a test request
 		RestRequest request = new RestRequest();
 		RestResponse res = new RestResponse();
-		request.requestUri = 'https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contracts/';
+		request.requestURI = '/contracts/';
 		request.httpMethod = 'POST';
 		request.headers.put('Content-Type', 'application/json');
 		request.requestBody = Blob.valueOf('abcdefgh');
@@ -320,8 +323,7 @@ private class ContractRestTest {
 		// Set up a test request
 		RestRequest request = new RestRequest();
 		RestResponse res = new RestResponse();
-		request.requestUri =
-			'https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contracts/' + contract.Id;
+		request.requestURI = '/contracts/' + contract.Id;
 		request.httpMethod = 'PATCH';
 		request.headers.put('Content-Type', 'application/json');
 		String jsonBody =
@@ -349,8 +351,7 @@ private class ContractRestTest {
 		// Set up a test request
 		RestRequest request = new RestRequest();
 		RestResponse res = new RestResponse();
-		request.requestUri =
-			'https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contracts/' + contract.Id;
+		request.requestURI = '/contracts/' + contract.Id;
 		request.httpMethod = 'PATCH';
 		request.headers.put('Content-Type', 'application/json');
 		String jsonBody =
@@ -377,8 +378,7 @@ private class ContractRestTest {
 		// Set up a test request
 		RestRequest request = new RestRequest();
 		RestResponse res = new RestResponse();
-		request.requestUri =
-			'https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contracts/' + contract.Id;
+		request.requestURI = '/contracts/' + contract.Id;
 		request.httpMethod = 'PATCH';
 		request.headers.put('Content-Type', 'application/json');
 		String jsonBody =

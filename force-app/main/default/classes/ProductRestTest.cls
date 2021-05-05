@@ -2,7 +2,7 @@
  * @description       :
  * @author            : Etienne Knoerr
  * @group             :
- * @last modified on  : 2021-04-23
+ * @last modified on  : 2021-05-05
  * @last modified by  : Etienne Knoerr
  * Modifications Log
  * Ver   Date         Author           Modification
@@ -14,19 +14,18 @@ private class ProductRestTest {
 	 *** GET
 	 *****************************************************************************************/
 	@isTest
-	static void testGetProduct2() {
+	static void testGetProduct() {
 		Product2 product2 = TestDataFactory.createProduct('aaa');
 		// Set up a test request
 		RestRequest request = new RestRequest();
 		RestResponse res = new RestResponse();
-		request.requestUri =
-			'https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Product2s/' + product2.id;
+		request.requestURI = '/products/' + product2.id;
 		request.httpMethod = 'GET';
 		RestContext.request = request;
 		RestContext.response = res;
 		// Call the method to test
 		Test.startTest();
-		ProductRest.getProduct2ById();
+		ProductRest.getProduct();
 		Test.stopTest();
 		// Verify results
 		String testBlob = res.responseBody.toString();
@@ -36,37 +35,40 @@ private class ProductRestTest {
 	}
 
 	@isTest
-	static void testGetProduct2WithoutId() {
+	static void testGetProductList() {
+		Product2 productOne = TestDataFactory.createProduct('aaa');
+		Product2 productTwo = TestDataFactory.createProduct('aaa');
 		// Set up a test request
 		RestRequest request = new RestRequest();
 		RestResponse res = new RestResponse();
-		request.requestUri = 'https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Product2s/';
+		request.requestURI = '/products/';
 		request.httpMethod = 'GET';
 		RestContext.request = request;
 		RestContext.response = res;
 		// Call the method to test
 		Test.startTest();
-		ProductRest.getProduct2ById();
+		ProductRest.getProduct();
 		Test.stopTest();
 		// Verify results
 		String testBlob = res.responseBody.toString();
-		System.assert(testBlob.contains('Id is not a valid Id'), 'Bad response');
-		System.assert(testBlob.contains('MISSING_PARAM'), 'Bad response');
-		System.assertEquals(400, RestContext.response.statusCode, 'Bad response code');
+		System.assert(testBlob.startsWith('[') && testBlob.endsWith(']'), 'Must contain an array');
+		System.assert(testBlob.contains(productOne.Id), 'Must contain productOne : ' + testBlob);
+		System.assert(testBlob.contains(productTwo.Id), 'Must contain productTwo');
+		System.assertEquals(200, RestContext.response.statusCode, 'Bad response code');
 	}
 
 	@isTest
-	static void testGetProduct2WithBadId() {
+	static void testGetProductWithBadId() {
 		// Set up a test request
 		RestRequest request = new RestRequest();
 		RestResponse res = new RestResponse();
-		request.requestUri = 'https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Product2s/01t1x00000CQS6VAAY';
+		request.requestURI = '/products/01t1x00000CQS6VAAY';
 		request.httpMethod = 'GET';
 		RestContext.request = request;
 		RestContext.response = res;
 		// Call the method to test
 		Test.startTest();
-		ProductRest.getProduct2ById();
+		ProductRest.getProduct();
 		Test.stopTest();
 		// Verify results
 		String testBlob = res.responseBody.toString();
@@ -76,17 +78,17 @@ private class ProductRestTest {
 	}
 
 	@isTest
-	static void testGetProduct2WithInvalidId() {
+	static void testGetProductWithInvalidId() {
 		// Set up a test request
 		RestRequest request = new RestRequest();
 		RestResponse res = new RestResponse();
-		request.requestUri = 'https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Product2s/0031x3oqAAD';
+		request.requestURI = '/products/0031x3oqAAD';
 		request.httpMethod = 'GET';
 		RestContext.request = request;
 		RestContext.response = res;
 		// Call the method to test
 		Test.startTest();
-		ProductRest.getProduct2ById();
+		ProductRest.getProduct();
 		Test.stopTest();
 		// Verify results
 		String testBlob = res.responseBody.toString();
