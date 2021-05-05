@@ -2,7 +2,7 @@
  * @description       :
  * @author            : Etienne Knoerr
  * @group             :
- * @last modified on  : 2021-04-23
+ * @last modified on  : 2021-05-05
  * @last modified by  : Etienne Knoerr
  * Modifications Log
  * Ver   Date         Author           Modification
@@ -19,8 +19,8 @@ private class RestManagerTest {
 		// Set up a test request
 		RestRequest request = new RestRequest();
 		RestResponse res = new RestResponse();
-		// request.requestUri =
-		// 	'https://customer-agility-8073-dev-ed.lightning.force.com/services/apexrest/Contacts/' + contact.id;
+		// request.requestURI =
+		// 	'/Contacts/' + contact.id;
 		// request.httpMethod = 'GET';
 		RestContext.request = request;
 		RestContext.response = res;

@@ -4,7 +4,7 @@
     <label>Prod_Rest</label>
     <oauthConfig>
         <callbackUrl>https://</callbackUrl>
-        <consumerKey>3MVG9KlmwBKoC7U2ypiH3CPYCvG2b5akUQyiXKxurjJvJ2TFzkU42W361zsGahVl89AMTrTD2mOmWLXqXofts</consumerKey>
+        <consumerKey>3MVG9KlmwBKoC7U2ypiH3CPYCvG2b5akUQyiXKxurjJvJ2TFzkU42W361zsGahVl89AMTrTD2mOmWLXqXoftA</consumerKey>
         <isAdminApproved>false</isAdminApproved>
         <isConsumerSecretOptional>false</isConsumerSecretOptional>
         <isIntrospectAllTokens>false</isIntrospectAllTokens>

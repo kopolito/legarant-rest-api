@@ -3,13 +3,14 @@
     <contactEmail>kopolito@kopol.xyz</contactEmail>
     <label>Staging_Rest</label>
     <oauthConfig>
-        <callbackUrl>https://</callbackUrl>
-        <consumerKey>3MVG9KlmwBKoC7U2ypiH3CPYCvKPUZabh_nuxCwXPCi7.ZpzEAaY4DRTMi70QILFEUoBAS9ZpW5pc9o6M5Ajy</consumerKey>
+        <callbackUrl>https://127.0.0.1/home</callbackUrl>
+        <consumerKey>3MVG9KlmwBKoC7U2ypiH3CPYCvKPUZabh_nuxCwXPCi7.ZpzEAaY4DRTMi70QILFEUoBAS9ZpW5pc9o6M5AjA</consumerKey>
         <isAdminApproved>false</isAdminApproved>
         <isConsumerSecretOptional>false</isConsumerSecretOptional>
         <isIntrospectAllTokens>false</isIntrospectAllTokens>
         <isSecretRequiredForRefreshToken>true</isSecretRequiredForRefreshToken>
         <scopes>Api</scopes>
+        <scopes>Web</scopes>
     </oauthConfig>
     <oauthPolicy>
         <ipRelaxation>ENFORCE</ipRelaxation>
