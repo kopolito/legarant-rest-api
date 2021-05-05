@@ -23,8 +23,8 @@ V 1.1.4
 
 ### installer le package dans l'org de test
 
-`sfdx force:package:install --wait 10 --publishwait 10 --package legarantrestapi@1.1.4-1 -k test1234 -r -u scratch`
+`sfdx force:package:install --wait 10 --publishwait 10 --package legarantrestapi@0.1.0-1 -k test1234 -r -u scratch`
 
 ### Publication de la version de package
 
-`sfdx force:package:version:promote -p legarantrestapi@1.1.4-1 -v legarant`
+`sfdx force:package:version:promote -p legarantrestapi@0.1.0-1 -v legarant`
