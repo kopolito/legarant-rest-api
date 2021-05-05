@@ -226,7 +226,7 @@ private class ContactRestTest {
 		System.assertEquals(400, RestContext.response.statusCode, 'Bad status code');
 		String testBlob = res.responseBody.toString();
 		System.assert(testBlob.contains('BAD_PARAM'), 'Bad response code');
-		System.assert(testBlob.contains('Email: invalid email address'), 'Bad message');
+		System.assert(testBlob.contains('bbb.com'), 'Bad error message');
 	}
 
 	@isTest
@@ -360,7 +360,7 @@ private class ContactRestTest {
 		System.assertEquals(400, RestContext.response.statusCode, 'Bad status code');
 		String testBlob = res.responseBody.toString();
 		System.assert(testBlob.contains('BAD_PARAM'), 'Bad response code');
-		System.assert(testBlob.contains('Email: invalid email address'), 'Bad message');
+		System.assert(testBlob.contains('bbb.com'), 'Bad error message');
 	}
 
 	@isTest
@@ -497,6 +497,6 @@ private class ContactRestTest {
 		System.assertEquals(400, RestContext.response.statusCode, 'Bad status code');
 		String testBlob = res.responseBody.toString();
 		System.assert(testBlob.contains('BAD_PARAM'), 'Bad response code');
-		System.assert(testBlob.contains('Email: invalid email address'), 'Bad message');
+		System.assert(testBlob.contains('bbb.com'), 'Bad error message');
 	}
 }

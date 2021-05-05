@@ -155,7 +155,7 @@ private class ContractRestTest {
 		System.assertEquals(400, RestContext.response.statusCode, 'Bad status code');
 		String testBlob = res.responseBody.toString();
 		System.assert(testBlob.contains('BAD_PARAMS'), 'Bad response code');
-		System.assert(testBlob.contains('Required fields are missing'), 'Bad response message');
+		System.assert(testBlob.contains('AccountId'), 'Bad error message');
 	}
 
 	@isTest
@@ -287,7 +287,7 @@ private class ContractRestTest {
 		System.assertEquals(400, RestContext.response.statusCode, 'Bad status code');
 		String testBlob = res.responseBody.toString();
 		System.assert(testBlob.contains('BAD_PARAMS'), 'Bad response code');
-		System.assert(testBlob.contains('Required fields are missing'), 'Bad response message');
+		System.assert(testBlob.contains('AccountId'), 'Bad error message');
 	}
 
 	@isTest
