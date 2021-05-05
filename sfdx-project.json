@@ -12,6 +12,7 @@
     "sfdcLoginUrl": "https://legarant2-dev-ed.my.salesforce.com/",
     "sourceApiVersion": "51.0",
     "packageAliases": {
-        "legarantrestapi": "0Ho09000000fxkICAQ"
+        "legarantrestapi": "0Ho09000000fxkICAQ",
+        "legarantrestapi@0.1.0-1": "04t09000000eCUxAAM"
     }
 }
