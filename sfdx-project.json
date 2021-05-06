@@ -1,18 +1,18 @@
 {
-    "packageDirectories": [
-        {
-            "path": "force-app",
-            "default": true,
-            "package": "legarantrestapi",
-            "versionName": "ver 0.1",
-            "versionNumber": "0.1.0.NEXT"
-        }
-    ],
-    "namespace": "",
-    "sfdcLoginUrl": "https://legarant2-dev-ed.my.salesforce.com/",
-    "sourceApiVersion": "51.0",
-    "packageAliases": {
-        "legarantrestapi": "0Ho09000000fxkICAQ",
-        "legarantrestapi@0.1.0-1": "04t09000000eCUxAAM"
-    }
+	"packageDirectories": [
+		{
+			"path": "force-app",
+			"default": true,
+			"package": "legarantrestapi",
+			"versionName": "ver 1.0",
+			"versionNumber": "1.0.0.NEXT"
+		}
+	],
+	"namespace": "",
+	"sfdcLoginUrl": "https://legarant2-dev-ed.my.salesforce.com/",
+	"sourceApiVersion": "51.0",
+	"packageAliases": {
+		"legarantrestapi": "0Ho09000000fxkICAQ",
+		"legarantrestapi@1.0.0-1": "04t09000000eCv1AAE"
+	}
 }

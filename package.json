@@ -1,7 +1,7 @@
 {
 	"name": "Legarant_Rest",
 	"private": true,
-	"version": "0.1",
+	"version": "1.0.0-1",
 	"description": "Apex Rest Backend",
 	"author": "Etienne Knoerr",
 	"license": "MIT",

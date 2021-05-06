@@ -1,7 +1,7 @@
 # Legarant Rest Api
 
 Rest Api coded with Apex for Salesforce Contacts, Accounts, Contracts and Product2s
-V 0.1
+V 1.0.0-1
 
 ## package installation :
 
