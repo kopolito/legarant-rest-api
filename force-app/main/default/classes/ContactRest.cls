@@ -2,17 +2,13 @@
  * @description       : Contacts REST Interface
  * @author            : Etienne Knoerr
  * @group             :
- * @last modified on  : 2021-05-05
+ * @last modified on  : 2021-05-27
  * @last modified by  : Etienne Knoerr
  * Modifications Log
  * Ver   Date         Author           Modification
  * 1.0   2021-04-01   Etienne Knoerr   Initial Version
  **/
 
-/*
-Questions : 
-  - si on ne supprime pas, en mettant Active__c à false : autorise-t-on la récupération / modification de contacts inactifs ?
-*/
 @RestResource(urlMapping='/contacts/*')
 global with sharing class ContactRest extends RestManager {
 	/**
@@ -31,7 +27,7 @@ global with sharing class ContactRest extends RestManager {
 			List<String> fieldNames = new List<String>(fieldMap.keySet());
 
 			if (getCollection) {
-				List<Contact> records = Database.query('SELECT ' + String.join(fieldNames, ',') + ' FROM Contact');
+				List<Contact> records = Database.query('SELECT ' + String.join(fieldNames, ',') + ' FROM Contact WHERE Inactivated__c = FALSE');
 				RestContext.response.responseBody = Blob.valueOf(JSON.serialize(records));
 			} else {
 				// check Id is valid
@@ -46,7 +42,7 @@ global with sharing class ContactRest extends RestManager {
 					String.join(fieldNames, ',') +
 					' FROM Contact  WHERE Id = \'' +
 					recordId +
-					'\''
+					'\' AND Inactivated__c = FALSE'
 				);
 				RestContext.response.responseBody = Blob.valueOf(JSON.serialize(record));
 			}
@@ -67,8 +63,8 @@ global with sharing class ContactRest extends RestManager {
 			Id contactId = RestContext.request.requestURI.substring(
 				RestContext.request.requestURI.lastIndexOf('/') + 1
 			);
-			Contact thisContact = [SELECT Id, Active__c FROM Contact WHERE Id = :contactId];
-			thisContact.Active__c = false;
+			Contact thisContact = [SELECT Id, Inactivated__c FROM Contact WHERE Id = :contactId];
+			thisContact.Inactivated__c = true;
 			DataBase.SaveResult result = Database.update(thisContact);
 			RestContext.response.statusCode = 204;
 		} catch (Exception e) {
