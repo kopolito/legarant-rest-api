@@ -9,10 +9,10 @@
 		}
 	],
 	"namespace": "",
-	"sfdcLoginUrl": "https://legarant2-dev-ed.my.salesforce.com/",
+	"sfdcLoginUrl": "https://legarant5-dev-ed.my.salesforce.com",
 	"sourceApiVersion": "51.0",
 	"packageAliases": {
-		"legarantrestapi": "0Ho09000000fxkICAQ",
-		"legarantrestapi@1.0.0-1": "04t09000000eCv1AAE"
+		"legarantrestapi": "0Ho090000008OdGCAU",
+		"legarantrestapi@1.0.0-2": "04t09000000mgt1AAA"
 	}
 }
