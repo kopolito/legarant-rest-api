@@ -1,17 +1,23 @@
 # Legarant Rest Api
 
 Rest Api coded with Apex for Salesforce Contacts, Accounts, Contracts and Product2s
-V 1.0.0-1
+V 1.0.0-2
 
 ## package installation :
 
-`https://login.salesforce.com/packaging/installPackage.apexp?p0=04t09000000ZoXMAA0`
+`https://login.salesforce.com/packaging/installPackage.apexp?p0=04t09000000mgt1AAA`
 
 ## Rappels pour la création de package
 
 ### Création de l'org de test
 
 `sfdx force:org:create --definitionfile config/project-scratch-def.json --durationdays 30 --setalias scratch -v legarant`
+
+### Création du mot de passe pour l'utilisateur de l'org Scratch
+
+`sfdx force:user:password:generate --targetusername test-rv3yhvaanakn@example.com`
+
+permet également de récupérer le jeton de sécurité
 
 ### Création du package
 
@@ -23,8 +29,8 @@ V 1.0.0-1
 
 ### installer le package dans l'org de test
 
-`sfdx force:package:install --wait 10 --publishwait 10 --package legarantrestapi@0.1.0-1 -k test1234 -r -u scratch`
+`sfdx force:package:install --wait 10 --publishwait 10 --package legarantrestapi@1.0.0-2 -k test1234 -r -u scratch`
 
 ### Publication de la version de package
 
-`sfdx force:package:version:promote -p legarantrestapi@0.1.0-1 -v legarant`
+`sfdx force:package:version:promote -p legarantrestapi@1.0.0-2 -v legarant`

@@ -2,7 +2,7 @@
  * @description       :
  * @author            : Etienne Knoerr
  * @group             :
- * @last modified on  : 2021-05-05
+ * @last modified on  : 2021-05-27
  * @last modified by  : Etienne Knoerr
  * Modifications Log
  * Ver   Date         Author           Modification
@@ -116,7 +116,7 @@ private class ContactRestTest {
 		ContactRest.deleteContact();
 		Test.stopTest();
 		// Verify results
-		List<Contact> contacts = [SELECT Id FROM Contact WHERE Id = :contact.Id AND Active__c = TRUE];
+		List<Contact> contacts = [SELECT Id FROM Contact WHERE Id = :contact.Id AND Inactivated__c = FALSE];
 		System.assertEquals(0, contacts.size(), 'Contact should be deleted');
 		System.assertEquals(204, RestContext.response.statusCode, 'Bad response code');
 	}
